@@ -1,0 +1,9 @@
+package Utils;
+import java.util.Random;
+
+public class RandomUtils {
+    public static int getRandom(int min, int max) {
+        Random r = new Random();
+        return r.nextInt(max - min) + min;
+    }
+}

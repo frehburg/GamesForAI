@@ -1,11 +1,6 @@
 package Snake;
 
-import Snake.GUI.SnakeGUI;
 import Snake.Representation.SnakeHandler;
-import Snake.Representation.SnakePlayer;
-import Snake.Representation.SnakeGame;
-import Snake.enums.SnakeBoardSize;
-import Snake.enums.SnakeSpeed;
 
 public class Main {
     public static void main(String[] args) {

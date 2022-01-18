@@ -1,13 +1,14 @@
-package Snake.Representation;
+package Game2048;
 
 import Snake.Interfaces.iSnakeGame;
+import Snake.Representation.SnakeState;
 import Snake.enums.SnakeDirection;
 
-public class SnakePlayer{
+public class Player2048{
 
     private iSnakeGame r;
 
-    public SnakePlayer() {
+    public Player2048() {
 
     }
 

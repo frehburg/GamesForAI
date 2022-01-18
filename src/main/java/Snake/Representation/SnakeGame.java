@@ -1,5 +1,6 @@
 package Snake.Representation;
 
+import Interfaces.iGame;
 import Snake.Interfaces.iSnakeGame;
 import Snake.Interfaces.iSnake;
 import Snake.enums.SnakeBoardSize;
@@ -11,7 +12,8 @@ import Utils.Tuple;
 
 import java.util.ArrayList;
 
-public class SnakeGame extends iSnakeGame {
+//TODO: Check bug where snake cannot pick up pellet in bottom left corner coming straight down
+public class SnakeGame extends iSnakeGame implements iGame {
     private SnakeField[][] board;
     private iSnake snake;
 
@@ -252,7 +254,13 @@ public class SnakeGame extends iSnakeGame {
         }
     }
 
+    @Override
     public SnakeState getState() {
         return new SnakeState(gameOver, score, board);
+    }
+
+    @Override
+    public int getSpeed() {
+        return this.speed;
     }
 }

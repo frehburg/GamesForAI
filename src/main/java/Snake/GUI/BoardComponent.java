@@ -6,16 +6,19 @@ import Snake.enums.SnakeField;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
 
 public class BoardComponent extends JComponent {
 
     public static int FIELD_SIZE = 20;
-    public static Color EMPTY = Color.decode("#005c34"), EMPTY2 = Color.decode("#1c9725"), SNAKE = Color.decode("#6a329f"), PELLET = Color.decode("#e51313");
+    //public static Color EMPTY = Color.decode("#005c34"), EMPTY2 = Color.decode("#1c9725"), SNAKE = Color.decode("#6a329f"), PELLET = Color.decode("#e51313");
+    private final HashMap<Integer, Color> colorMapping;
 
     private SnakeState state;
 
-    public BoardComponent(SnakeState state) {
+    public BoardComponent(SnakeState state, HashMap<Integer, Color> colorMapping) {
         this.state = state;
+        this.colorMapping = colorMapping;
     }
 
     public void paintComponent(Graphics g)
@@ -28,22 +31,13 @@ public class BoardComponent extends JComponent {
 
         for(int x = 0; x < board.length; x++) {
             for(int y = 0; y < board[x].length; y++) {
-                switch(board[x][y]) {
-                    case RIGHT:
-                    case UP:
-                    case LEFT:
-                    case DOWN:
-                        g2.setColor(SNAKE);
-                        break;
-                    case PELLET:
-                        g2.setColor(PELLET);
-                        break;
-                    case EMPTY:
-                        if((x + y & 1) == 1)
-                            g2.setColor(EMPTY);
-                        else
-                            g2.setColor(EMPTY2);
-                        break;
+                if(board[x][y].getID() == SnakeField.EMPTY.getID()) {
+                    if((x + y & 1) == 1)
+                        g2.setColor(colorMapping.get(SnakeField.EMPTY.getID() - 1));
+                    else
+                        g2.setColor(colorMapping.get(SnakeField.EMPTY.getID()));
+                } else {
+                    g2.setColor(colorMapping.get(board[x][y].getID()));
                 }
                 g2.fill(new Rectangle2D.Double(x * FIELD_SIZE, y * FIELD_SIZE, FIELD_SIZE, FIELD_SIZE));
                 g2.setColor(g2.getColor().brighter());

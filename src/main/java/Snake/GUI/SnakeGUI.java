@@ -23,7 +23,7 @@ public class SnakeGUI implements iTileGUI{
     private SnakeKeyManager km;
     private JFrame frame;
     private JPanel p;
-    private BoardComponent bc;
+    private SnakeBoardComponent bc;
     private HashMap<Integer, Color> colorMapping;
 
     public SnakeGUI(SnakeKeyManager km, SnakeHandler h, SnakeGame game) {
@@ -50,24 +50,23 @@ public class SnakeGUI implements iTileGUI{
         frame.setLocationRelativeTo(null);//to place it in the center of the
         frame.setResizable(false);
 
-        //init main menu
         SnakeState state = game.getState();
         SnakeField[][] board = state.getBoard();
-        frame.setSize(board.length * BoardComponent.FIELD_SIZE, board.length * BoardComponent.FIELD_SIZE);
+        frame.setSize(board.length * SnakeBoardComponent.FIELD_SIZE, board.length * SnakeBoardComponent.FIELD_SIZE);
 
         //Component
-        bc = new BoardComponent(state, colorMapping);
+        bc = new SnakeBoardComponent(state, colorMapping);
 
         //
         p = new JPanel(new BorderLayout());
-        p.setSize(board.length * BoardComponent.FIELD_SIZE, (board.length+1) * BoardComponent.FIELD_SIZE);
-        p.setPreferredSize(new Dimension(board.length * BoardComponent.FIELD_SIZE, (board.length+1) * BoardComponent.FIELD_SIZE));
+        p.setSize(board.length * SnakeBoardComponent.FIELD_SIZE, (board.length+1) * SnakeBoardComponent.FIELD_SIZE);
+        p.setPreferredSize(new Dimension(board.length * SnakeBoardComponent.FIELD_SIZE, (board.length+1) * SnakeBoardComponent.FIELD_SIZE));
         p.validate();
         p.add(bc, BorderLayout.CENTER);
 
         frame.add(p);
         frame.pack();
-        frame.setPreferredSize(new Dimension(board.length * BoardComponent.FIELD_SIZE, board.length * BoardComponent.FIELD_SIZE));
+        frame.setPreferredSize(new Dimension(board.length * SnakeBoardComponent.FIELD_SIZE, board.length * SnakeBoardComponent.FIELD_SIZE));
 
         //input
         frame.addKeyListener(km);
@@ -93,7 +92,7 @@ public class SnakeGUI implements iTileGUI{
     public void setResources(HashMap<Integer, BufferedImage> spriteMapping, String[] locations) {
 
     }
-
+    @Override
     public void exit() {
         frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }

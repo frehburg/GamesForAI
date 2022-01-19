@@ -9,5 +9,7 @@ public interface iState {
 
     Object[][] getBoard();
 
+    int[][] getIDBoard();
+
     boolean isWon();
 }

@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 
-public class BoardComponent extends JComponent {
+public class SnakeBoardComponent extends JComponent {
 
     public static int FIELD_SIZE = 20;
     //public static Color EMPTY = Color.decode("#005c34"), EMPTY2 = Color.decode("#1c9725"), SNAKE = Color.decode("#6a329f"), PELLET = Color.decode("#e51313");
@@ -16,7 +16,7 @@ public class BoardComponent extends JComponent {
 
     private SnakeState state;
 
-    public BoardComponent(SnakeState state, HashMap<Integer, Color> colorMapping) {
+    public SnakeBoardComponent(SnakeState state, HashMap<Integer, Color> colorMapping) {
         this.state = state;
         this.colorMapping = colorMapping;
     }
@@ -27,7 +27,7 @@ public class BoardComponent extends JComponent {
         boolean gameOver = state.isGameOver();
         int score = state.getScore();
         Graphics2D g2 = (Graphics2D)g;
-        this.setSize(board.length * BoardComponent.FIELD_SIZE, (board.length+1) * BoardComponent.FIELD_SIZE);
+        this.setSize(board.length * SnakeBoardComponent.FIELD_SIZE, (board.length+1) * SnakeBoardComponent.FIELD_SIZE);
 
         for(int x = 0; x < board.length; x++) {
             for(int y = 0; y < board[x].length; y++) {
@@ -46,17 +46,17 @@ public class BoardComponent extends JComponent {
         }
         if(gameOver) {
             g2.setColor(Color.black);
-            g2.fill(new Rectangle2D.Double(0,0,board.length * BoardComponent.FIELD_SIZE, board.length * BoardComponent.FIELD_SIZE));
+            g2.fill(new Rectangle2D.Double(0,0,board.length * SnakeBoardComponent.FIELD_SIZE, board.length * SnakeBoardComponent.FIELD_SIZE));
             g2.setColor(Color.RED);
-            g2.drawString("GAME OVER", (int) (board.length * BoardComponent.FIELD_SIZE * 0.38), (int) (board.length * BoardComponent.FIELD_SIZE * 0.5));
+            g2.drawString("GAME OVER", (int) (board.length * SnakeBoardComponent.FIELD_SIZE * 0.38), (int) (board.length * SnakeBoardComponent.FIELD_SIZE * 0.5));
         }
         g2.setColor(Color.white);
-        g2.fill(new Rectangle2D.Double(0, board.length * BoardComponent.FIELD_SIZE, board.length * BoardComponent.FIELD_SIZE, BoardComponent.FIELD_SIZE));
+        g2.fill(new Rectangle2D.Double(0, board.length * SnakeBoardComponent.FIELD_SIZE, board.length * SnakeBoardComponent.FIELD_SIZE, SnakeBoardComponent.FIELD_SIZE));
         g2.setColor(Color.black);
-        g2.drawString("SCORE: "+ score, (float)0.2 * BoardComponent.FIELD_SIZE, (float)(board.length + 0.6) * BoardComponent.FIELD_SIZE);
+        g2.drawString("SCORE: "+ score, (float)0.2 * SnakeBoardComponent.FIELD_SIZE, (float)(board.length + 0.6) * SnakeBoardComponent.FIELD_SIZE);
         g2.setColor(Color.RED);
-        g2.draw(new Rectangle2D.Double(1,0,board.length * BoardComponent.FIELD_SIZE - 2, board.length * BoardComponent.FIELD_SIZE - 1));
-        this.setPreferredSize(new Dimension(board.length * BoardComponent.FIELD_SIZE, (board.length+1) * BoardComponent.FIELD_SIZE));
+        g2.draw(new Rectangle2D.Double(1,0,board.length * SnakeBoardComponent.FIELD_SIZE - 2, board.length * SnakeBoardComponent.FIELD_SIZE - 1));
+        this.setPreferredSize(new Dimension(board.length * SnakeBoardComponent.FIELD_SIZE, (board.length+1) * SnakeBoardComponent.FIELD_SIZE));
     }
 
     public void setState(SnakeState state) {

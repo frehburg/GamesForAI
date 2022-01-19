@@ -21,8 +21,9 @@ public class SnakeGame extends iSnakeGame implements iGame {
         options(SnakeBoardSize.STANDARD, SnakeSpeed.MEDIUM);
     }
 
-    public SnakeGame(SnakeBoardSize size, SnakeSpeed speed) {
+    public SnakeGame(SnakeBoardSize size, SnakeSpeed speed, SnakePlayer p) {
         options(size,speed);
+        p.setGame(this);
     }
 
     @Override

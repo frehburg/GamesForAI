@@ -1,7 +1,6 @@
 package Chess.Representation;
 
 import Chess.interfaces.iChessGame;
-import Interfaces.iState;
 import Interfaces.iState2dPlus;
 import Utils.Tuple;
 

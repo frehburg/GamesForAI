@@ -5,8 +5,8 @@ import Game2048.enums.Field2048;
 import Interfaces.iHandler;
 import Interfaces.iState;
 import Interfaces.iTileGUI;
-import TileGUI.*;
 import TileGUI.Discrete2D.TileGUI2dDiscrete;
+import TileGUI.enums.TileSize;
 import Utils.Tuple;
 
 import java.awt.*;

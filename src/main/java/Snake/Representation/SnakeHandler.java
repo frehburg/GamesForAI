@@ -6,8 +6,8 @@ import Interfaces.iTileGUI;
 import Snake.enums.SnakeBoardSize;
 import Snake.enums.SnakeField;
 import Snake.enums.SnakeSpeed;
-import TileGUI.*;
 import TileGUI.Discrete2D.TileGUI2dDiscrete;
+import TileGUI.enums.TileSize;
 import Utils.Tuple;
 
 import java.awt.*;
@@ -23,6 +23,7 @@ public class SnakeHandler implements iHandler {
     private SnakeBoardSize snakeBoardSize;
     private SnakeSpeed snakeSpeed;
     private HashMap<Integer, Color> colorMapping;
+    private HashMap<Integer, String> spriteMapping;
 
     public SnakeHandler() {
         init();
@@ -44,6 +45,14 @@ public class SnakeHandler implements iHandler {
         colorMapping.put(SnakeField.RIGHT.getID(), Color.decode("#6a329f"));
         colorMapping.put(SnakeField.PELLET.getID(), Color.decode("#e51313"));
 
+        this.spriteMapping = new HashMap<>();
+        spriteMapping.put(SnakeField.EMPTY.getID() - 1, "src/main/resources/Snake/grass.png");
+        spriteMapping.put(SnakeField.EMPTY.getID(), "src/main/resources/Snake/grass.png");
+        spriteMapping.put(SnakeField.UP.getID(), "src/main/resources/Snake/snake.png");
+        spriteMapping.put(SnakeField.DOWN.getID(), "src/main/resources/Snake/snake.png");
+        spriteMapping.put(SnakeField.LEFT.getID(), "src/main/resources/Snake/snake.png");
+        spriteMapping.put(SnakeField.RIGHT.getID(), "src/main/resources/Snake/snake.png");
+        spriteMapping.put(SnakeField.PELLET.getID(), "src/main/resources/Snake/pellet.png");
         newGame();
     }
 
@@ -76,8 +85,10 @@ public class SnakeHandler implements iHandler {
     @Override
     public void game() {
         SnakeGame game = new SnakeGame(snakeBoardSize, snakeSpeed, p);
+        //with colors
         gui = new TileGUI2dDiscrete(km,null,this,game, TileSize.SMALL, "Snake", colorMapping);//new SnakeGUI(km, this,game);//
-
+        //with images
+        //gui = new TileGUI2dDiscrete(km,null,this,game, TileSize.SMALL, spriteMapping, "Snake");
         double cur = System.currentTimeMillis();
         double delta = game.getSpeed();
         while(!game.getState().isGameOver()) {

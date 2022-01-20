@@ -1,4 +1,4 @@
-package TileGUI;
+package TileGUI.enums;
 
 public enum TileSize {
     TINY(16), SMALL(20), MEDIUM (24), BIG(32), HUGE(64);

@@ -89,7 +89,7 @@ public class SnakeGUI implements iTileGUI{
     }
 
     @Override
-    public void setResources(HashMap<Integer, BufferedImage> spriteMapping, String[] locations) {
+    public void setResources(HashMap<Integer, String> colorMapping, int k) {
 
     }
     @Override

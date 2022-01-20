@@ -1,5 +1,6 @@
 package TileGUI;
 
+import Game2048.Representation.State2048;
 import Interfaces.iState;
 import Snake.GUI.SnakeBoardComponent;
 import Snake.Representation.SnakeState;
@@ -36,6 +37,10 @@ public class TileBoardComponent extends JComponent {
                 g2.fill(new Rectangle2D.Double(x * size, y * size, size, size));
                 g2.setColor(g2.getColor().brighter());
                 g2.draw(new Rectangle2D.Double(x * size, y * size, size, size));
+                if(state instanceof State2048) {
+                    g2.setFont(new Font("SansSerif",Font.PLAIN,20));
+                    draw2048Strings(board[x][y], g2, x, y);
+                }
             }
         }
         if(gameOver) {
@@ -47,10 +52,32 @@ public class TileBoardComponent extends JComponent {
         g2.setColor(Color.white);
         g2.fill(new Rectangle2D.Double(0, board.length * size, board.length * size, size));
         g2.setColor(Color.black);
+        g2.setFont(new Font("SansSerif",Font.PLAIN,16));
         g2.drawString("SCORE: "+ score + "           WON: " + won, (float)0.2 * size, (float)(board.length + 0.6) * size);
         g2.setColor(Color.RED);
         g2.draw(new Rectangle2D.Double(1,0,board.length * size - 2, board.length * size - 1));
         this.setPreferredSize(new Dimension(board.length * size, (board.length+1) * size));
+    }
+
+    private void draw2048Strings(int power, Graphics2D g2, int x, int y) {
+        String s;
+        if(power == 0) {
+            s = "    ";
+        }else if(power < 11 ) {
+            s = (int)Math.pow(2, power) + "";
+            while(s.length() < 4) {
+                s = " " + s;
+            }
+        } else {
+            s = "2^"+power;
+        }
+        if(power > 0 && power <= 2) {
+            g2.setColor(Color.black);
+            g2.drawString(s, (int) (x * size + 0.15 * size), (int) (y * size + 0.65 * size));
+        } else {
+            g2.setColor(Color.white);
+            g2.drawString(s, (int) (x * size + 0.2 * size), (int) (y * size + 0.65 * size));
+        }
     }
 
     public void setState(iState state) {

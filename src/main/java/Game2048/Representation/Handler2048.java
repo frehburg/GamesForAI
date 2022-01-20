@@ -34,7 +34,7 @@ public class Handler2048 implements iHandler {
         boardSize2048 = BoardSize2048.FOUR;
         this.colorMapping = new HashMap<>();
         colorMapping.put(-1,Color.decode("#bbada6"));//lines inbetween
-        colorMapping.put(Field2048.EMPTY.getPower(), Color.decode("#ebe1d8"));
+        colorMapping.put(Field2048.EMPTY.getPower(), Color.decode("#bbada6"));
         colorMapping.put(1, Color.decode("#eee4db"));//2
         colorMapping.put(2, Color.decode("#eedfc8"));//4
         colorMapping.put(3, Color.decode("#f3b079"));//8
@@ -46,7 +46,12 @@ public class Handler2048 implements iHandler {
         colorMapping.put(9, Color.decode("#e3bf29"));//512
         colorMapping.put(10, Color.decode("#e3ba14"));//1024
         colorMapping.put(11, Color.decode("#ebc301"));//2048
-
+        int eleven = Integer.valueOf("44413f", 16).intValue();
+        for(int i = 12; i < 100; i++) {
+            eleven += 3000;
+            String hex = "#"+Integer.toHexString(eleven);
+            colorMapping.put(i,Color.decode(hex));
+        }
 
         newGame();
     }

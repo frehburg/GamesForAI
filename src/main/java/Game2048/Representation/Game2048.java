@@ -5,9 +5,7 @@ import Game2048.enums.BoardSize2048;
 import Game2048.enums.Direction2048;
 import Game2048.enums.Field2048;
 import Interfaces.iGame;
-import Snake.Representation.SnakeState;
 import Utils.Tuple;
-import jdk.jshell.execution.Util;
 
 import java.util.ArrayList;
 
@@ -26,36 +24,11 @@ public class Game2048 extends iGame2048 implements iGame {
         board = new Field2048[size.getSize()][size.getSize()];
         for(int x = 0; x < size.getSize(); x++) {
             for(int y = 0; y < size.getSize(); y++) {
-                board[x][y] = new Field2048(1);
+                board[x][y] = Field2048.EMPTY;
             }
         }
-        //addRandom();
-        //Add artificial numbers
-        /*board[0][0] = new Field2048(1);
-        board[0][1] = new Field2048(1);
-        board[0][2] = new Field2048(1);
-        board[0][3] = new Field2048(1);
-        board[1][1] = new Field2048(1);
-        board[1][2] = new Field2048(1);
-        board[1][3] = new Field2048(1);*/
-        /*
-        //for rotation
-        board[0][0] = new Field2048(1);
-        board[1][0] = new Field2048(2);
-        board[2][0] = new Field2048(3);
-        board[3][0] = new Field2048(4);
-        board[0][1] = new Field2048(5);
-        board[1][1] = new Field2048(6);
-        board[2][1] = new Field2048(7);
-        board[3][1] = new Field2048(8);
-        board[0][2] = new Field2048(9);
-        board[1][2] = new Field2048(10);
-        board[2][2] = new Field2048(11);
-        board[3][2] = new Field2048(12);
-        board[0][3] = new Field2048(13);
-        board[1][3] = new Field2048(14);
-        board[2][3] = new Field2048(15);
-        board[3][3] = new Field2048(16);*/
+        addRandom();
+        addRandom();
     }
     @Override
     public void addRandom() {
@@ -69,43 +42,87 @@ public class Game2048 extends iGame2048 implements iGame {
             }
         }
 
-        //add a two
-        int r = Utils.RandomUtils.getRandom(0,empty.size() - 1);
-        Tuple<Integer,Integer> f = empty.get(r);
-        board[f.getX()][f.getY()] = new Field2048(1);
+        if(empty.size() == 0) {
+            gameOver = true;
+            return;
+        }
 
         //add a 4 with 10% chance
-        r = Utils.RandomUtils.getRandom(0,9);
+        int r = Utils.RandomUtils.getRandom(0,9);
+        Tuple<Integer,Integer> f;
         if(r == 7) {// 1 / 10 chance
             r = Utils.RandomUtils.getRandom(0,empty.size() - 1);
             f = empty.get(r);
             board[f.getX()][f.getY()] = new Field2048(2);
+            score += 4;
+        } else {
+            //add a two
+            if(empty.size() == 1) {
+                r = 0;
+            } else {
+                r = Utils.RandomUtils.getRandom(0,empty.size() - 1);
+            }
+            f = empty.get(r);
+            board[f.getX()][f.getY()] = new Field2048(1);
+            score += 2;
         }
     }
 
     @Override
     public void swipe(Direction2048 direction) {
+        if(gameOver)
+            return;
+        boolean somethingmoved = false;
         if(direction == Direction2048.DOWN) {
-            board = swipeDown(board);
+            Tuple<Field2048[][],Boolean> t = swipeDown(board);
+            board = t.getX();
+            somethingmoved = t.getY();
         }
         if(direction == Direction2048.RIGHT) {
             board = rotate(board,1);
-            board = swipeDown(board);
+            Tuple<Field2048[][],Boolean> t = swipeDown(board);
+            board = t.getX();
+            somethingmoved = t.getY();
             board = rotate(board, -1);
         }
         if(direction == Direction2048.UP) {
             board = rotate(board,2);
-            board = swipeDown(board);
+            Tuple<Field2048[][],Boolean> t = swipeDown(board);
+            board = t.getX();
+            somethingmoved = t.getY();
             board = rotate(board, -2);
         }
         if(direction == Direction2048.LEFT) {
             board = rotate(board,3);
-            board = swipeDown(board);
+            Tuple<Field2048[][],Boolean> t = swipeDown(board);
+            board = t.getX();
+            somethingmoved = t.getY();
             board = rotate(board, -3);
+        }
+        if(somethingmoved) {
+            addRandom();
+        } else if(!somethingmoved && allFieldsFull()) {
+            //cannot move anymore
+            gameOver = true;
+            //lost
+            won = false;
+            return;
         }
     }
 
-    private Field2048[][] swipeDown(Field2048[][] a) {
+    private boolean allFieldsFull() {
+        for(int x = 0; x < size.getSize(); x++) {
+            for(int y = 0; y < size.getSize(); y++) {
+                if(board[x][y] == Field2048.EMPTY) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private Tuple<Field2048[][],Boolean> swipeDown(Field2048[][] a) {
+        boolean somethingMoved = false;
         //get copy of a
         Field2048[][] b = new Field2048[size.getSize()][size.getSize()];
         for(int x = 0; x < size.getSize(); x++) {
@@ -119,18 +136,37 @@ public class Game2048 extends iGame2048 implements iGame {
                 newRow[i] = Field2048.EMPTY;
             }
             inner:for(int y = size.getSize() - 1; y >= 0; y--) {
-                if(b[x][y].equals(Field2048.EMPTY)) {
+                if(b[x][y].equals(Field2048.EMPTY)) {//nothing happens if the field is empty
                     continue inner;
                 }
-                if(y == 0) {
+                if(y == 0) {//add last bit if it hasnt been added
                     newRow[y] = b[x][y];
                     continue inner;
                 }
-                if(b[x][y].equals(b[x][y - 1])) {
-                    newRow[y] = new Field2048(b[x][y].getPower() + 1);
-                    b[x][y] = Field2048.EMPTY;
-                    b[x][y - 1] = Field2048.EMPTY;
-                } else {
+                boolean added = false;
+                innerest:for(int y2 = y - 1; y2 >= 0; y2--) {//go through under it
+                    if(b[x][y].equals(b[x][y2])) {//Add two together
+                        added = true;
+                        int newPower = b[x][y].getPower() + 1;
+                        newRow[y] = new Field2048(newPower);
+                        int deltaScore = (int) Math.pow(2,newPower);
+                        score += deltaScore;
+                        b[x][y] = Field2048.EMPTY;
+                        b[x][y2] = Field2048.EMPTY;
+
+                        if(deltaScore == 2048) {//means a 2048 block was created
+                            won = true;
+                            //gameOver = true;
+                        }
+
+                        somethingMoved = true;
+                        break innerest;
+                    }
+                    if(!b[x][y].equals(b[x][y2]) && !b[x][y].equals(Field2048.EMPTY)) {
+                        break innerest;
+                    }
+                }
+                if(!added) {
                     newRow[y] = b[x][y];
                 }
             }
@@ -146,11 +182,12 @@ public class Game2048 extends iGame2048 implements iGame {
                     if(b[x][y + 1].equals(Field2048.EMPTY)) {
                         b[x][y + 1] = b[x][y];
                         b[x][y] = Field2048.EMPTY;
+                        somethingMoved = true;
                     }
                 }
             }
         }
-        return b;
+        return new Tuple<>(b, somethingMoved);
     }
 
     /**

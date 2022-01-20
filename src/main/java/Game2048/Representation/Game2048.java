@@ -136,7 +136,7 @@ public class Game2048 extends iGame2048 implements iGame {
                 newRow[i] = Field2048.EMPTY;
             }
             inner:for(int y = size.getSize() - 1; y >= 0; y--) {
-                if(b[x][y].equals(Field2048.EMPTY)) {//nothing happens if the field is empty
+                if(b[x][y].getPower()==Field2048.EMPTY.getPower()) {//nothing happens if the field is empty
                     continue inner;
                 }
                 if(y == 0) {//add last bit if it hasnt been added
@@ -144,8 +144,11 @@ public class Game2048 extends iGame2048 implements iGame {
                     continue inner;
                 }
                 boolean added = false;
+                //System.out.println("x: "+x+" y: "+y+" "+b[x][y]);
                 innerest:for(int y2 = y - 1; y2 >= 0; y2--) {//go through under it
-                    if(b[x][y].equals(b[x][y2])) {//Add two together
+                    //System.out.println("x: "+x+" y: "+y2+" "+b[x][y2]);
+                    if(b[x][y].getPower()== b[x][y2].getPower()) {//Add two together
+                        System.out.println("Hello");
                         added = true;
                         int newPower = b[x][y].getPower() + 1;
                         newRow[y] = new Field2048(newPower);
@@ -162,7 +165,8 @@ public class Game2048 extends iGame2048 implements iGame {
                         somethingMoved = true;
                         break innerest;
                     }
-                    if(!b[x][y].equals(b[x][y2]) && !b[x][y].equals(Field2048.EMPTY)) {
+                    if(b[x][y].getPower() != b[x][y2].getPower() && b[x][y2].getPower() != Field2048.EMPTY.getPower()) {
+                        System.out.println("hello");
                         break innerest;
                     }
                 }

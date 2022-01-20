@@ -1,10 +1,8 @@
 package TileGUI.Discrete2DPlus;
 
-import Interfaces.iGame;
-import Interfaces.iHandler;
-import Interfaces.iState;
-import Interfaces.iTileGUI;
+import Interfaces.*;
 import TileGUI.enums.TileSize;
+import Utils.ImageLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +11,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
-public class TileGUI2dDiscretePlus implements iTileGUI {
+public class TileGUI2dDiscretePlus implements iTileGUI2dPlus {
     private iHandler h;
     private KeyListener km;
     private MouseListener mm;
@@ -26,17 +26,20 @@ public class TileGUI2dDiscretePlus implements iTileGUI {
     private String[] locations;
     private int size;
     private String title;
+    private boolean useImages;
 
-    public TileGUI2dDiscretePlus(KeyListener km, MouseListener mm, iHandler h, iGame game, TileSize tileSize, String title, HashMap<Integer, Color> colorMapping) {
+    public TileGUI2dDiscretePlus(KeyListener km, MouseListener mm, iHandler h, iGame2dPlus game, TileSize tileSize, String title, HashMap<Integer, Color> colorMapping) {
         this.title = title;
         this.size = tileSize.getSize();
+        this.useImages = false;
         setResources(colorMapping);
         startGame(km, mm, h, game);
     }
 
-    public TileGUI2dDiscretePlus(KeyListener km, MouseListener mm, iHandler h, iGame game, TileSize tileSize, HashMap<Integer, String> locationMapping, String title) {
+    public TileGUI2dDiscretePlus(KeyListener km, MouseListener mm, iHandler h, iGame2dPlus game, TileSize tileSize, HashMap<Integer, String> locationMapping, String title) {
         this.title = title;
         this.size = tileSize.getSize();
+        this.useImages = true;
         setResources(locationMapping, 0);
         startGame(km, mm, h, game);
     }
@@ -47,18 +50,20 @@ public class TileGUI2dDiscretePlus implements iTileGUI {
     }
 
     @Override
-    public void setResources(HashMap<Integer, String> colorMapping, int k) {
-        this.spriteMapping = spriteMapping;
-        this.locations = locations;
-        //TODO: load sprites
+    public void setResources(HashMap<Integer, String> locationMapping, int k) {
+        this.spriteMapping = new HashMap<>();
+        Set<Map.Entry<Integer, String>> entrySet = locationMapping.entrySet();
+        for(Map.Entry<Integer, String> entry : entrySet) {
+            spriteMapping.put(entry.getKey(), ImageLoader.loadImage(entry.getValue()));
+        }
     }
 
     @Override
-    public void startGame(KeyListener km, MouseListener mm, iHandler h, iGame g) {
+    public void startGame(KeyListener km, MouseListener mm, iHandler h, iGame2dPlus g) {
         //TODO: with sprites
         this.km = km;
         this.h = h;
-        iGame game = g;
+        iGame2dPlus game = g;
 
         //JFrame
         frame = new JFrame(title);
@@ -66,23 +71,25 @@ public class TileGUI2dDiscretePlus implements iTileGUI {
         frame.setLocationRelativeTo(null);//to place it in the center of the
         //frame.setResizable(false);
 
-        iState state = game.getState();
-        int[][] board = state.getIDBoard();
-        frame.setSize(board.length * size, board.length * size);
-        System.out.println("Hello");
+        iState2dPlus state = game.getState();
+        int[][][] board = state.getIDBoard();
+        frame.setSize(board[0].length * size, board[0].length * size);
         //Component
-        bc = new TileBoardComponent2dDiscretePlus(state, colorMapping,size);
-        System.out.println("Hello");
+        if(useImages) {
+            bc = new TileBoardComponent2dDiscretePlus(state, size, spriteMapping);
+        } else {
+            bc = new TileBoardComponent2dDiscretePlus(state, colorMapping, size);
+        }
         //
         p = new JPanel(new BorderLayout());
         p.setSize(bc.getWidth(), bc.getHeight());
-        p.setPreferredSize(new Dimension(board.length * size, (board.length+1) * size));
+        p.setPreferredSize(new Dimension(board[0].length * size, (board[0].length+1) * size));
         p.validate();
         p.add(bc, BorderLayout.CENTER);
 
         frame.add(p);
         frame.pack();
-        frame.setPreferredSize(new Dimension(board.length * size, (board.length+1) * size));
+        frame.setPreferredSize(new Dimension(board[0].length * size, (board[0].length+1) * size));
 
         //input
         if(km != null)
@@ -93,7 +100,7 @@ public class TileGUI2dDiscretePlus implements iTileGUI {
     }
 
     @Override
-    public void render(iState state) {
+    public void render(iState2dPlus state) {
         //TODO: rendering with sprites
         bc.setState(state);
         frame.invalidate();

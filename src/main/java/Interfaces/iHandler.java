@@ -9,7 +9,7 @@ public interface iHandler {
 
     void newGame();
 
-    void addToHighScores(SnakeState state);
+    void addToHighScores(iState state);
 
     void game();
 }

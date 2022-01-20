@@ -1,19 +1,28 @@
-package Game2048;
+package Game2048.Representation;
 
+import Game2048.Interfaces.iGame2048;
 import Game2048.enums.BoardSize2048;
 import Game2048.enums.Direction2048;
 import Game2048.enums.Field2048;
+import Interfaces.iGame;
+import Snake.Representation.SnakeState;
 import Utils.Tuple;
 import jdk.jshell.execution.Util;
 
 import java.util.ArrayList;
 
-public class Game2048 extends iGame2048{
+public class Game2048 extends iGame2048 implements iGame {
 
     private Field2048[][] board;
+    private boolean gameOver;
+    private boolean won;
+    private int score;
 
     public Game2048(BoardSize2048 size) {
         this.size = size;
+        this.gameOver = false;
+        this.won = false;
+        this.score = 0;
         board = new Field2048[size.getSize()][size.getSize()];
         for(int x = 0; x < size.getSize(); x++) {
             for(int y = 0; y < size.getSize(); y++) {
@@ -211,5 +220,12 @@ public class Game2048 extends iGame2048{
             s+="\n";
         }
         return s;
+    }
+
+    public State2048 getState() {
+        return new State2048(gameOver,won,score,board);
+    }
+
+    public void updateBoard() {
     }
 }

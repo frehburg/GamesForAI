@@ -1,11 +1,10 @@
-package Snake.Representation;
+package Game2048.Representation;
 
+import Game2048.enums.BoardSize2048;
+import Game2048.enums.Field2048;
 import Interfaces.iHandler;
 import Interfaces.iState;
 import Interfaces.iTileGUI;
-import Snake.enums.SnakeBoardSize;
-import Snake.enums.SnakeField;
-import Snake.enums.SnakeSpeed;
 import TileGUI.*;
 import Utils.Tuple;
 
@@ -14,34 +13,40 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
-public class SnakeHandler implements iHandler {
+public class Handler2048 implements iHandler {
+    private HashMap<Integer, Color> colorMapping;
     private ArrayList<Tuple<String, Integer>> highscores;
     private iTileGUI gui;
-    private SnakePlayer p;
-    private SnakeKeyManager km;
-    private SnakeBoardSize snakeBoardSize;
-    private SnakeSpeed snakeSpeed;
-    private HashMap<Integer, Color> colorMapping;
+    private Player2048 p;
+    private KeyManager2048 km;
+    private BoardSize2048 boardSize2048;
 
-    public SnakeHandler() {
+    public Handler2048() {
         init();
     }
+
     @Override
     public void init() {
         highscores = new ArrayList<>();
-        p = new SnakePlayer();
-        km = new SnakeKeyManager();
+        p = new Player2048();
+        km = new KeyManager2048();
         km.setPlayer(p);
-        snakeBoardSize = SnakeBoardSize.STANDARD;
-        snakeSpeed = SnakeSpeed.SIMPLE;
+        boardSize2048 = BoardSize2048.FOUR;
         this.colorMapping = new HashMap<>();
-        colorMapping.put(SnakeField.EMPTY.getID() - 1, Color.decode("#005c34"));
-        colorMapping.put(SnakeField.EMPTY.getID(), Color.decode("#1c9725"));
-        colorMapping.put(SnakeField.UP.getID(), Color.decode("#6a329f"));
-        colorMapping.put(SnakeField.DOWN.getID(), Color.decode("#6a329f"));
-        colorMapping.put(SnakeField.LEFT.getID(), Color.decode("#6a329f"));
-        colorMapping.put(SnakeField.RIGHT.getID(), Color.decode("#6a329f"));
-        colorMapping.put(SnakeField.PELLET.getID(), Color.decode("#e51313"));
+        colorMapping.put(-1,Color.decode("#bbada6"));//lines inbetween
+        colorMapping.put(Field2048.EMPTY.getPower(), Color.decode("#ebe1d8"));
+        colorMapping.put(1, Color.decode("#eee4db"));//2
+        colorMapping.put(2, Color.decode("#eedfc8"));//4
+        colorMapping.put(3, Color.decode("#f3b079"));//8
+        colorMapping.put(4, Color.decode("#e89356"));//16
+        colorMapping.put(5, Color.decode("#f97b60"));//32
+        colorMapping.put(6, Color.decode("#eb5b37"));//64
+        colorMapping.put(7, Color.decode("#f3d96a"));//128
+        colorMapping.put(8, Color.decode("#f2d04b"));//256
+        colorMapping.put(9, Color.decode("#e3bf29"));//512
+        colorMapping.put(10, Color.decode("#e3ba14"));//1024
+        colorMapping.put(11, Color.decode("#ebc301"));//2048
+
 
         newGame();
     }
@@ -74,17 +79,17 @@ public class SnakeHandler implements iHandler {
 
     @Override
     public void game() {
-        SnakeGame game = new SnakeGame(snakeBoardSize, snakeSpeed, p);
-        gui = new TileGUI(km,null,this,game, TileSize.SMALL, "Snake", colorMapping);//new SnakeGUI(km, this,game);//
+        Game2048 game = new Game2048(boardSize2048);
+        p.setGame(game);
+        gui = new TileGUI(km,null,this,game, TileSize.HUGE, "2048", colorMapping);//new SnakeGUI(km, this,game);//
 
         double cur = System.currentTimeMillis();
-        double delta = game.getSpeed();
+        double delta = 50;
         while(!game.getState().isGameOver()) {
             while(System.currentTimeMillis() - cur < delta) {
-                //System.out.println(System.currentTimeMillis() - cur);
+
             }
             cur = System.currentTimeMillis();
-            game.updateBoard();
             gui.render(game.getState());
         }
         addToHighScores(game.getState());

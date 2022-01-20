@@ -1,32 +1,37 @@
-package Snake.Representation;
+package Game2048.Representation;
 
+import Game2048.enums.Field2048;
 import Interfaces.iState;
+import Snake.Representation.SnakeState;
 import Snake.enums.SnakeField;
 
-public class SnakeState implements iState {
+public class State2048 implements iState {
     private final boolean gameOver;
     private final int score;
-    private final SnakeField[][] board;
+    private final Field2048[][] board;
     private int[][] idBoard;
-    public SnakeState(boolean gameOver, int score, SnakeField[][] board) {
+    private boolean won;
+
+    public State2048(boolean gameOver, boolean won, int score, Field2048[][] board) {
         this.gameOver = gameOver;
+        this.won = won;
         this.score = score;
         this.board = board;
     }
 
     @Override
     public boolean isGameOver() {
-        return gameOver;
+        return this.gameOver;
     }
 
     @Override
     public int getScore() {
-        return score;
+        return this.score;
     }
 
     @Override
-    public SnakeField[][] getBoard() {
-        return board;
+    public Field2048[][] getBoard() {
+        return this.board;
     }
 
     @Override
@@ -35,14 +40,7 @@ public class SnakeState implements iState {
             idBoard = new int[board.length][board.length];
             for(int x = 0; x < board.length; x++) {
                 for(int y = 0; y < board.length; y++) {
-                    if(board[x][y].getID() == SnakeField.EMPTY.getID()) {
-                        if ((x + y & 1) == 1)
-                            idBoard[x][y] = SnakeField.EMPTY.getID() - 1;
-                        else
-                            idBoard[x][y] = SnakeField.EMPTY.getID();
-                    } else {
-                        idBoard[x][y] = board[x][y].getID();
-                    }
+                    idBoard[x][y] = board[x][y].getPower();
                 }
             }
         }
@@ -51,6 +49,6 @@ public class SnakeState implements iState {
 
     @Override
     public boolean isWon() {
-        return false;
+        return this.won;
     }
 }

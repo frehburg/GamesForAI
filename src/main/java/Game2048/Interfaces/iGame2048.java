@@ -1,5 +1,6 @@
-package Game2048;
+package Game2048.Interfaces;
 
+import Game2048.Representation.State2048;
 import Game2048.enums.BoardSize2048;
 import Game2048.enums.Direction2048;
 import Game2048.enums.Field2048;
@@ -12,4 +13,6 @@ public abstract class iGame2048 {
     public abstract boolean isSwipable(Direction2048 direction);
     public abstract BoardSize2048 getSize();
     public abstract Field2048[][] getBoard();
+
+    public abstract State2048 getState();
 }

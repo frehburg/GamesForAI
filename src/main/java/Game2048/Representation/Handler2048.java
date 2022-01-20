@@ -6,6 +6,7 @@ import Interfaces.iHandler;
 import Interfaces.iState;
 import Interfaces.iTileGUI;
 import TileGUI.*;
+import TileGUI.Discrete2D.TileGUI2dDiscrete;
 import Utils.Tuple;
 
 import java.awt.*;
@@ -86,7 +87,7 @@ public class Handler2048 implements iHandler {
     public void game() {
         Game2048 game = new Game2048(boardSize2048);
         p.setGame(game);
-        gui = new TileGUI(km,null,this,game, TileSize.HUGE, "2048", colorMapping);//new SnakeGUI(km, this,game);//
+        gui = new TileGUI2dDiscrete(km,null,this,game, TileSize.HUGE, "2048", colorMapping);//new SnakeGUI(km, this,game);//
 
         double cur = System.currentTimeMillis();
         double delta = 50;

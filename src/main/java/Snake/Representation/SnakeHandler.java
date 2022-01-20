@@ -7,6 +7,7 @@ import Snake.enums.SnakeBoardSize;
 import Snake.enums.SnakeField;
 import Snake.enums.SnakeSpeed;
 import TileGUI.*;
+import TileGUI.Discrete2D.TileGUI2dDiscrete;
 import Utils.Tuple;
 
 import java.awt.*;
@@ -32,8 +33,8 @@ public class SnakeHandler implements iHandler {
         p = new SnakePlayer();
         km = new SnakeKeyManager();
         km.setPlayer(p);
-        snakeBoardSize = SnakeBoardSize.STANDARD;
-        snakeSpeed = SnakeSpeed.SIMPLE;
+        snakeBoardSize = SnakeBoardSize.BIG;
+        snakeSpeed = SnakeSpeed.INSANE;
         this.colorMapping = new HashMap<>();
         colorMapping.put(SnakeField.EMPTY.getID() - 1, Color.decode("#005c34"));
         colorMapping.put(SnakeField.EMPTY.getID(), Color.decode("#1c9725"));
@@ -75,7 +76,7 @@ public class SnakeHandler implements iHandler {
     @Override
     public void game() {
         SnakeGame game = new SnakeGame(snakeBoardSize, snakeSpeed, p);
-        gui = new TileGUI(km,null,this,game, TileSize.SMALL, "Snake", colorMapping);//new SnakeGUI(km, this,game);//
+        gui = new TileGUI2dDiscrete(km,null,this,game, TileSize.SMALL, "Snake", colorMapping);//new SnakeGUI(km, this,game);//
 
         double cur = System.currentTimeMillis();
         double delta = game.getSpeed();

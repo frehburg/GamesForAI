@@ -1,14 +1,10 @@
-package TileGUI;
+package TileGUI.Discrete2D;
 
 import Interfaces.iGame;
 import Interfaces.iHandler;
 import Interfaces.iState;
 import Interfaces.iTileGUI;
-import Snake.GUI.SnakeBoardComponent;
-import Snake.Representation.SnakeGame;
-import Snake.Representation.SnakeHandler;
-import Snake.Representation.SnakeKeyManager;
-import Snake.Representation.SnakeState;
+import TileGUI.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,27 +14,27 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-public class TileGUI implements iTileGUI {
+public class TileGUI2dDiscrete implements iTileGUI {
     private iHandler h;
     private KeyListener km;
     private MouseListener mm;
     private JFrame frame;
     private JPanel p;
-    private TileBoardComponent bc;
+    private TileBoardComponent2dDiscrete bc;
     private HashMap<Integer, Color> colorMapping;
     private HashMap<Integer, BufferedImage> spriteMapping;
     private String[] locations;
     private int size;
     private String title;
 
-    public TileGUI(KeyListener km, MouseListener mm, iHandler h, iGame game, TileSize tileSize, String title, HashMap<Integer, Color> colorMapping) {
+    public TileGUI2dDiscrete(KeyListener km, MouseListener mm, iHandler h, iGame game, TileSize tileSize, String title, HashMap<Integer, Color> colorMapping) {
         this.title = title;
         this.size = tileSize.getSize();
         setResources(colorMapping);
         startGame(km, mm, h, game);
     }
 
-    public TileGUI(KeyListener km, MouseListener mm, iHandler h, iGame game, TileSize tileSize, String title, HashMap<Integer, BufferedImage> spriteMapping, String[] locations) {
+    public TileGUI2dDiscrete(KeyListener km, MouseListener mm, iHandler h, iGame game, TileSize tileSize, String title, HashMap<Integer, BufferedImage> spriteMapping, String[] locations) {
         this.title = title;
         this.size = tileSize.getSize();
         setResources(spriteMapping,locations);
@@ -75,7 +71,7 @@ public class TileGUI implements iTileGUI {
         frame.setSize(board.length * size, board.length * size);
         System.out.println("Hello");
         //Component
-        bc = new TileBoardComponent(state, colorMapping,size);
+        bc = new TileBoardComponent2dDiscrete(state, colorMapping,size);
         System.out.println("Hello");
         //
         p = new JPanel(new BorderLayout());

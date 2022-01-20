@@ -1,22 +1,19 @@
-package TileGUI;
+package TileGUI.Discrete2D;
 
 import Game2048.Representation.State2048;
 import Interfaces.iState;
-import Snake.GUI.SnakeBoardComponent;
-import Snake.Representation.SnakeState;
-import Snake.enums.SnakeField;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 
-public class TileBoardComponent extends JComponent {
+public class TileBoardComponent2dDiscrete extends JComponent {
     private final HashMap<Integer, Color> colorMapping;
     private final int size;
     private iState state;
 
-    public TileBoardComponent(iState state, HashMap<Integer, Color> colorMapping, int size) {
+    public TileBoardComponent2dDiscrete(iState state, HashMap<Integer, Color> colorMapping, int size) {
         this.state = state;
         this.colorMapping = colorMapping;
         this.size = size;
@@ -63,7 +60,7 @@ public class TileBoardComponent extends JComponent {
         String s;
         if(power == 0) {
             s = "    ";
-        }else if(power < 11 ) {
+        }else if(power <= 11 ) {
             s = (int)Math.pow(2, power) + "";
             while(s.length() < 4) {
                 s = " " + s;

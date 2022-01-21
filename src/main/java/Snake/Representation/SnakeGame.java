@@ -141,6 +141,7 @@ public class SnakeGame extends iSnakeGame implements iGame {
                 addSnakeToBoard();
             } else {
                 //grow at the back
+                //TODO: Check bug when pellet in corner
                 Tuple<Integer,Integer> delta2 = mapDirectionToDelta(snake.getTailDirection());
                 int xDelt2 = delta2.getX(), yDelt2 = delta2.getY();
                 board[snake.getTail().getX() - xDelt2][snake.getTail().getY() - yDelt2] = mapDirectionToField(snake.getTailDirection());

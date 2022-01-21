@@ -134,23 +134,17 @@ public class SnakeGame extends iSnakeGame implements iGame {
         if(growSnake) {
             //the block after the next move is also in bounds
             if(inBounds(snake.getHead().getX() + 2*xDelt, snake.getHead().getY() + 2*yDelt)) {
-                //add a snake block in front
-                board[snake.getHead().getX() + xDelt][snake.getHead().getY() + yDelt] = mapDirectionToField(this.direction);
                 //move stored position of head
                 snake.addToFront(this.direction);
                 addSnakeToBoard();
             } else {
                 //grow at the back
                 //TODO: Check bug when pellet in corner
-                Tuple<Integer,Integer> delta2 = mapDirectionToDelta(snake.getTailDirection());
-                int xDelt2 = delta2.getX(), yDelt2 = delta2.getY();
-                board[snake.getTail().getX() - xDelt2][snake.getTail().getY() - yDelt2] = mapDirectionToField(snake.getTailDirection());
-
                 //move forward
                 snake.move(this.direction);
                 //move stored position of head
                 snake.growAtBack();
-                System.out.println(snake.getBody());
+                //System.out.println(snake.getBody());
                 addSnakeToBoard();
             }
             //increase score

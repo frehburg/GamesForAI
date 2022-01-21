@@ -11,11 +11,13 @@ import static Snake.Representation.SnakeGame.mapDirectionToField;
 
 public class Snake extends iSnake {
     private ArrayList<Tuple<SnakeDirection,Tuple<Integer,Integer>>> body;
+    private SnakeDirection headDirection;
     public Snake(Tuple<SnakeDirection,Tuple<Integer,Integer>> head, Tuple<SnakeDirection,Tuple<Integer,Integer>> body1, Tuple<SnakeDirection,Tuple<Integer,Integer>> body2) {
         body = new ArrayList<>();
         body.add(head);
         body.add(body1);
         body.add(body2);
+        headDirection = SnakeDirection.RIGHT;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class Snake extends iSnake {
 
     @Override
     public SnakeDirection getHeadDirection() {
-        return body.get(0).getX();
+        return headDirection;
     }
 
     @Override
@@ -72,6 +74,7 @@ public class Snake extends iSnake {
         body.remove(body.size() - 1);
         //add in front of head
        addToFront(direction);
+       this.headDirection = direction;
     }
 
     @Override

@@ -5,6 +5,7 @@ import Interfaces.iHandler;
 import Interfaces.iState;
 import Interfaces.iTileGUI;
 import Snake.agents.SnakeBaseLineAgent;
+import Snake.agents.SnakeSimpleReflexAgent;
 import Snake.enums.SnakeBoardSize;
 import Snake.enums.SnakeField;
 import Snake.enums.SnakeSpeed;
@@ -87,7 +88,7 @@ public class SnakeHandler implements iHandler {
     @Override
     public void game() {
         SnakeGame game = new SnakeGame(snakeBoardSize, snakeSpeed, p);
-        iAgent agent = new SnakeBaseLineAgent(p);
+        iAgent agent = new SnakeSimpleReflexAgent(p);
         //with colors
         gui = new TileGUI2dDiscrete(km,null,this,game, TileSize.SMALL, "Snake", colorMapping);//new SnakeGUI(km, this,game);//
         //with images

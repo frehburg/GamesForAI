@@ -7,43 +7,59 @@ import Snake.Representation.SnakeState;
 import Snake.enums.SnakeBoardSize;
 import Snake.enums.SnakeSpeed;
 import Utils.RandomUtils;
+import Utils.Triple;
 
 import java.util.ArrayList;
 
 public class SnakeAgentHandler {
-    private final iAgent agent;
-    private final SnakePlayer player;
-    private final SnakeBoardSize snakeBoardSize;
-    private final SnakeSpeed snakeSpeed;
+    private iAgent agent;
+    private SnakePlayer player;
+    private SnakeBoardSize snakeBoardSize;
+    private SnakeSpeed snakeSpeed;
 
     public SnakeAgentHandler() {
         this.player = new SnakePlayer();
-        this.agent = new SnakeBaseLineAgent(player);
+        this.agent = new SnakeSimpleReflexAgent(player);
         this.snakeBoardSize = SnakeBoardSize.STANDARD;
         this.snakeSpeed = SnakeSpeed.EASY;
-        System.out.println(play(1000000000));
+        Triple<Double, Double, Double> scores = play(10000);
+        System.out.println("Point average: "+scores.getX()+
+                " maximum points: " + scores.getY() +
+                " minimum score: " + scores.getZ());
     }
-    private double play(int games) {
-        double avg = 0.0;
+    private Triple<Double, Double, Double> play(int games) {
         double sum = 0.0;
+        double max = 0.0;
+        double min = 1000;
         for(int i = 0; i < games; i++) {
+            System.out.println(i);
             int score = play();
-            avg += (double) (score/games);
             sum += score;
+            if(score < min)
+                min = score;
+            if(score > max)
+                max = score;
+            System.out.println("Score: "+score+
+                    " maximum points: " + max +
+                    " minimum score: " + min);
         }
-        return avg;
+        double avg = sum /(double) games;
+        return new Triple<Double, Double, Double>(avg, max, min);
     }
 
     private int play() {
         SnakeGame game = new SnakeGame(snakeBoardSize, snakeSpeed, player);
         ArrayList<SnakeState> log = new ArrayList<>();
         SnakeState state = game.getState();
-        while(state.isGameOver()) {
+        while(!state.isGameOver()) {
+            System.out.println(state.getSnake().getHead());
             agent.react(state);
             game.updateBoard();
             state = game.getState();
+            System.out.println(state.getScore());
             log.add(state);
         }
+        state = game.getState();
         return state.getScore();
     }
 }

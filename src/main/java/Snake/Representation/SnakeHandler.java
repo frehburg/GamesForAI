@@ -35,7 +35,7 @@ public class SnakeHandler implements iHandler {
         km = new SnakeKeyManager();
         km.setPlayer(p);
         snakeBoardSize = SnakeBoardSize.STANDARD;
-        snakeSpeed = SnakeSpeed.HARD;
+        snakeSpeed = SnakeSpeed.EASY;
         this.colorMapping = new HashMap<>();
         colorMapping.put(SnakeField.EMPTY.getID() - 1, Color.decode("#005c34"));
         colorMapping.put(SnakeField.EMPTY.getID(), Color.decode("#1c9725"));

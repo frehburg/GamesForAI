@@ -1,5 +1,7 @@
 package TileGUI.Discrete2DPlus;
 
+import Chess.Representation.ChessState;
+import Chess.interfaces.iChessGame;
 import Game2048.Representation.State2048;
 import Interfaces.iState;
 import Interfaces.iState2dPlus;
@@ -83,6 +85,9 @@ public class TileBoardComponent2dDiscretePlus extends JComponent {
             for(int x = 0; x < board[z].length; x++) {
                 for(int y = 0; y < board[z][x].length; y++) {
                     g.drawImage(spriteMapping.get(board[z][x][y]), x*size, y*size, size, size, null);
+                    if(state instanceof ChessState) {
+                        drawChessStrings(g, board,x,y);
+                    }
                 }
             }
         }
@@ -90,5 +95,21 @@ public class TileBoardComponent2dDiscretePlus extends JComponent {
 
     public void setState(iState2dPlus state) {
         this.state = state;
+    }
+
+    public void drawChessStrings(Graphics g, int[][][] board, int x, int y) {
+        char[] c = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
+        int[] k = new int[]{1,2,3,4,5,6,7,8};
+        g.setFont(new Font("SansSerif",Font.PLAIN,20));
+        g.setColor(Color.black);
+        if((x == 0 && y > 0 && y < 9) || (x == 9 && y > 0 && y < 9)) {
+            g.drawString((9-k[y-1]) +"", (int) ((x+0.4)*size), (int) ((y+0.65)*size));
+        }
+        if(y == 0 && x > 0 && x < 9) {
+            g.drawString(c[x-1] +"",(int) ((x+0.4)*size), (int) ((y+0.65)*size));
+        }
+        if(y == 9 && x > 0 && x < 9) {
+            g.drawString(c[x-1] +"",(int) ((x+0.4)*size), (int) ((y+0.55)*size));
+        }
     }
 }

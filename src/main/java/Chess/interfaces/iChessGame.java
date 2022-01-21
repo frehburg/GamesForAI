@@ -1,5 +1,6 @@
 package Chess.interfaces;
 
+import Chess.exceptions.NoPieceInFieldException;
 import Utils.Tuple;
 
 import java.util.ArrayList;
@@ -48,6 +49,8 @@ public interface iChessGame {
      */
     Tuple<Integer, Integer> convertStringToCoords(String field);
 
+    void changeTurn();
+
     /**
      * If the piece on the field from can be moved to the field to, then it is moved
      * and true is returned,
@@ -56,7 +59,7 @@ public interface iChessGame {
      * @param to Chess field
      * @return whether the move was successful
      */
-    boolean move(String from, String to);
+    boolean move(String from, String to) throws NoPieceInFieldException;
 
     /**
      * Returns true, if the piece in field is risked,
@@ -73,18 +76,18 @@ public interface iChessGame {
      * and true is returned,
      * Else nothing happens and false is returned.
      * Only works if there is a pawn on from.
-     * @param from Chess field with pawn
-     * @param to Chess field
+     * @param fromCoords Chess field with pawn
+     * @param toCoords Chess field
      * @return whether the move was successful
      */
-    boolean movePawn(String from, String to);
+    boolean movePawn(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords);
 
     /**
      * Returns a list of the fields the pawn can possibly go to.
      * @param pawn Chess field with pawn
      * @return a list of fields the pawn in pawn can move to
      */
-    ArrayList<String> getPawnMoves(String pawn);
+    ArrayList<Tuple<Integer, Integer>> getPawnMoves(Tuple<Integer,Integer> pawn) throws NoPieceInFieldException;
 
     /**
      * Returns true if the pawn on capturer can capture the pawn on capturee.
@@ -92,7 +95,7 @@ public interface iChessGame {
      * @param capturee Chess field with an enemy pawn
      * @return Whether capturer can capture capturee en passant
      */
-    boolean canCaptureEnPassant(String capturer, String capturee);
+    boolean canCaptureEnPassant(Tuple<Integer, Integer> capturer, Tuple<Integer, Integer> capturee);
 
     /**
      * Returns true if the pawn has reached the last file
@@ -100,60 +103,61 @@ public interface iChessGame {
      * @param valueOfPiece Value of the piece the pawn should be turned into
      * @return Whether the pawn in pawn can be promoted
      */
-    boolean canPromote(String pawn, int valueOfPiece);
+    boolean canPromote(Tuple<Integer, Integer> pawn);
 
     //---------------------------ROOK------------------------------------------
 
-    boolean moveRook(String from, String to);
+
+    boolean moveRook(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords);
     /**
      * Returns a list of the fields the rook can possibly go to.
      * @param rook Chess field with rook
      * @return  a list of fields the rook in rook can move to
      */
-    ArrayList<String> getRookMoves(String rook);
+    ArrayList<Tuple<Integer, Integer>> getRookMoves(Tuple<Integer,Integer> rook);
 
     //-------------------------KNIGHT------------------------------------------
 
-    boolean moveKnight(String from, String to);
+    boolean moveKnight(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords);
     /**
      * Returns a list of the fields the knight can possibly go to.
      * @param knight Chess field with knight
      * @return  a list of fields the knight in knight can move to
      */
-    ArrayList<String> getKnightMoves(String knight);
+    ArrayList<Tuple<Integer, Integer>> getKnightMoves(Tuple<Integer,Integer> knight);
 
     //---------------------------BISHOP----------------------------------------
 
-    boolean moveBishop(String from, String to);
+    boolean moveBishop(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords);
 
     /**
      * Returns a list of the fields the bishop can possibly go to.
      * @param bishop Chess field with bishop
      * @return a list of fields the bishop in bishop can move to
      */
-    ArrayList<String> getBishopMoves(String bishop);
+    ArrayList<Tuple<Integer, Integer>> getBishopMoves(Tuple<Integer,Integer> bishop);
 
     //---------------------------QUEEN----------------------------------------
 
-    boolean moveQueen(String from, String to);
+    boolean moveQueen(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords);
 
     /**
      * Returns a list of the fields the queen can possibly go to.
      * @param queen Chess field with queen
      * @return a list of fields the queen in queen can move to
      */
-    ArrayList<String> getQueenMoves(String queen);
+    ArrayList<Tuple<Integer, Integer>> getQueenMoves(Tuple<Integer,Integer> queen);
 
     //---------------------------KING-----------------------------------------
 
-    boolean moveKing(String from, String to);
+    boolean moveKing(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords);
     boolean isCheck(int player);
     /**
      * Returns a list of the fields the king can possibly go to.
      * @param king Chess field with king
      * @return a list of fields the king in king can move to
      */
-    ArrayList<String> getKingMoves(String king);
+    ArrayList<Tuple<Integer, Integer>> getKingMoves(Tuple<Integer,Integer> king);
 
 
     boolean isCheckmate(int player);
@@ -161,7 +165,7 @@ public interface iChessGame {
     /**
      * Adds the move to the log
      */
-    void log();
+    void log(String s);
 
     /**
      * Returns the log of all moves of the game in chronological order

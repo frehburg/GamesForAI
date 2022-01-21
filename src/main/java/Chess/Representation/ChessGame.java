@@ -1,22 +1,30 @@
 package Chess.Representation;
 
+import Chess.exceptions.NoPieceInFieldException;
+import Chess.exceptions.NoSuchPieceException;
 import Chess.interfaces.iChessGame;
 import Interfaces.*;
+import Utils.ArrayUtils;
 import Utils.Tuple;
 
 import java.util.ArrayList;
 
 public class ChessGame implements iGame2dPlus, iChessGame {
     private int[][] board;
+    private int[][] prevBoard;
+    private int[][] prev2Board;
     private boolean gameOver;
     private int score;
     private boolean won;
     private ArrayList<Tuple<Integer, Integer>> atRisk;
+    private ArrayList<String> moveLog;
+    private int turn;
 
     public ChessGame() {
         startPosition();
         this.gameOver = false;
-        this.score = 0;
+        this.score = getScore();
+        this.turn = WHITE;
     }
 
     @Override
@@ -26,6 +34,7 @@ public class ChessGame implements iGame2dPlus, iChessGame {
 
     @Override
     public void startPosition() {
+        moveLog = new ArrayList<>();
         board = new int[8][8];
         Tuple<Integer, Integer> t;
         //---black back rank---------------------
@@ -40,7 +49,7 @@ public class ChessGame implements iGame2dPlus, iChessGame {
         board[t.getX()][t.getY()] = B_BISHOP_WF;
         // white king
         t = convertStringToCoords(D8);
-        board[t.getX()][t.getY()] = B_KING;
+        board[t.getX()][t.getY()] = EMPTY;//B_KING;
         // white queen
         t = convertStringToCoords(E8);
         board[t.getX()][t.getY()] = B_QUEEN;
@@ -103,7 +112,7 @@ public class ChessGame implements iGame2dPlus, iChessGame {
         board[t.getX()][t.getY()] = W_KNIGHT_BF;
         // white rook on black field
         t = convertStringToCoords(H1);
-        board[t.getX()][t.getY()] = W_ROOK_WF;
+        board[t.getX()][t.getY()] = EMPTY;//W_ROOK_WF;
         //---white front rank---------------------
         // white pawn a
         t = convertStringToCoords(A2);
@@ -136,7 +145,320 @@ public class ChessGame implements iGame2dPlus, iChessGame {
                 board[x][y] = EMPTY;
             }
         }
+
+        prevBoard = ArrayUtils.copyArray(board);
+        prev2Board = ArrayUtils.copyArray(board);
     }
+
+    @Override
+    public boolean move(String from, String to){
+        Tuple<Integer,Integer> fromCoords = convertStringToCoords(from),
+                toCoords = convertStringToCoords(to);
+        int piece = board[fromCoords.getX()][fromCoords.getY()];
+        if(piece == EMPTY)
+            return false;
+        int color = getColor(piece);
+        //save prev board
+        if(color == turn) {//it is the right turn
+            switch(piece) {
+                case W_PAWN_A:
+                case W_PAWN_B:
+                case W_PAWN_C:
+                case W_PAWN_D:
+                case W_PAWN_E:
+                case W_PAWN_F:
+                case W_PAWN_G:
+                case W_PAWN_H:
+                case B_PAWN_A:
+                case B_PAWN_B:
+                case B_PAWN_C:
+                case B_PAWN_D:
+                case B_PAWN_E:
+                case B_PAWN_F:
+                case B_PAWN_G:
+                case B_PAWN_H:
+                    return movePawn(fromCoords, toCoords);
+                case W_ROOK_BF:
+                case W_ROOK_WF:
+                case B_ROOK_BF:
+                case B_ROOK_WF:
+                    return moveRook(fromCoords, toCoords);
+                case W_KNIGHT_BF:
+                case W_KNIGHT_WF:
+                case B_KNIGHT_BF:
+                case B_KNIGHT_WF:
+                    return moveKnight(fromCoords, toCoords);
+                case W_BISHOP_BF:
+                case W_BISHOP_WF:
+                case B_BISHOP_BF:
+                case B_BISHOP_WF:
+                    return moveBishop(fromCoords, toCoords);
+                case W_KING:
+                case B_KING:
+                    return moveKing(fromCoords, toCoords);
+                case W_QUEEN:
+                case B_QUEEN:
+                    return moveQueen(fromCoords, toCoords);
+                case EMPTY:
+                    return false;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isRisked(String field) {
+        return false;
+    }
+
+    //------------------------PAWN-----------------------------------
+    @Override
+    public boolean movePawn(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords) {
+        try {
+            ArrayList<Tuple<Integer,Integer>> moves = getPawnMoves(fromCoords);
+            for(Tuple<Integer, Integer> t : moves) {
+                //the requested move is a valid move
+                if(t.getX() == toCoords.getX() && t.getY() == toCoords.getY()) {
+                    //then actually move
+                    prev2Board = ArrayUtils.copyArray(prevBoard);
+                    prevBoard = ArrayUtils.copyArray(board);
+                    log("Moved " + convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
+                            + convertCoordsToString(fromCoords) + " to " + convertCoordsToString(toCoords) + "("+
+                            convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
+                    if(canPromote(toCoords)) {
+                        board[toCoords.getX()][toCoords.getY()] = turn/Math.abs(turn) * iChessGame.W_QUEEN;
+                    } else {
+                        board[toCoords.getX()][toCoords.getY()] = board[fromCoords.getX()][fromCoords.getY()];
+                    }
+                    board[fromCoords.getX()][fromCoords.getY()] = EMPTY;
+
+                    //change turn
+                    changeTurn();
+
+                    return true;
+                }
+                //else nothing happens
+            }
+        } catch (NoPieceInFieldException e) {
+            e.printStackTrace();
+        } catch (NoSuchPieceException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public ArrayList<Tuple<Integer, Integer>> getPawnMoves(Tuple<Integer,Integer> pawn) throws NoPieceInFieldException {
+        //expects that the right player is at turn and that there is a pawn in the field
+        //TODO: add capture enPassant
+        ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>();
+        int x = pawn.getX(), y = pawn.getY();;
+        int piece = board[pawn.getX()][pawn.getY()];
+        int color = getColor(piece);
+        if(color == WHITE) {
+            if(y == 6) {//still in start position
+                Tuple<Integer, Integer> nextField = new Tuple<>(x,5), nextNextField = new Tuple<>(x, 4);
+                //check if can go two moves
+                if(isEmpty(nextField)) {
+                    moves.add(nextField);
+                    if(isEmpty(nextNextField)) {
+                        moves.add(nextNextField);
+                    }
+                }
+            } else if(y > 0){
+                Tuple<Integer, Integer> nextField = new Tuple<>(x,y - 1);
+                if(isEmpty(nextField)) {
+                    moves.add(nextField);
+                }
+            }
+            //capturing
+            if(x > 0 && y > 0) {
+                Tuple<Integer, Integer> topLeft = new Tuple<>(x - 1,y - 1);
+                if(board[topLeft.getX()][topLeft.getY()] != EMPTY) {
+                    //can capture top left
+                    moves.add(topLeft);
+                }
+                Tuple<Integer, Integer> left = new Tuple<>(x - 1,y);
+                //capture enPassant
+                if(canCaptureEnPassant(pawn, left)) {
+                    moves.add(left);
+                }
+            }
+            if(x < 7 && y > 0) {
+                Tuple<Integer, Integer> topRight = new Tuple<>(x + 1,y - 1);
+                if(board[topRight.getX()][topRight.getY()] != EMPTY) {
+                    //can capture top left
+                    moves.add(topRight);
+                }
+                Tuple<Integer, Integer> right = new Tuple<>(x + 1,y);
+                //capture enPassant
+                if(canCaptureEnPassant(pawn, right)) {
+                    moves.add(right);
+                }
+            }
+        } else if(color == BLACK) {
+            if(y == 1) {//still in start position
+                Tuple<Integer, Integer> nextField = new Tuple<>(x,2), nextNextField = new Tuple<>(x, 3);
+                //check if can go two moves
+                if(isEmpty(nextField)) {
+                    moves.add(nextField);
+                    if(isEmpty(nextNextField)) {
+                        moves.add(nextNextField);
+                    }
+                }
+            } else if(y < 7){
+                Tuple<Integer, Integer> nextField = new Tuple<>(x,y + 1);
+                if(isEmpty(nextField)) {
+                    moves.add(nextField);
+                }
+            }
+            //capturing
+            if(x > 0 && y < 7) {
+                Tuple<Integer, Integer> bottomLeft = new Tuple<>(x - 1,y + 1);
+                if(board[bottomLeft.getX()][bottomLeft.getY()] != EMPTY) {
+                    //can capture top left
+                    moves.add(bottomLeft);
+                }
+                Tuple<Integer, Integer> left = new Tuple<>(x - 1,y);
+                //capture enPassant
+                if(canCaptureEnPassant(pawn, left)) {
+                    moves.add(left);
+                }
+            }
+            if(x < 7 && y < 7) {
+                Tuple<Integer, Integer> bottomRight = new Tuple<>(x + 1,y + 1);
+                if(board[bottomRight.getX()][bottomRight.getY()] != EMPTY) {
+                    //can capture top left
+                    moves.add(bottomRight);
+                }
+                Tuple<Integer, Integer> right = new Tuple<>(x + 1,y);
+                //capture enPassant
+                if(canCaptureEnPassant(pawn, right)) {
+                    moves.add(right);
+                }
+            }
+        }
+        return moves;
+    }
+
+    @Override
+    public boolean canCaptureEnPassant(Tuple<Integer, Integer> capturer, Tuple<Integer, Integer> capturee) {
+        int capturerPiece = board[capturer.getX()][capturer.getY()],
+        captureePiece = board[capturee.getX()][capturee.getY()];
+        int color = getColor(capturerPiece);
+        int x = capturer.getX(), y = capturer.getY();
+        try {
+            if(convertPieceIDString(captureePiece).contains("pawn")) {
+                if(color == WHITE) {
+                    //capturing
+                    if(x > 0 && y == 3) {
+                        Tuple<Integer, Integer> topLeft = new Tuple<>(x - 1,y - 2);
+                        if(prevBoard[topLeft.getX()][topLeft.getY()] == captureePiece) {
+                            //can capture top left
+                            return true;
+                        }
+                    }
+                    if(x < 7 && y == 3) {
+                        Tuple<Integer, Integer> topRight = new Tuple<>(x + 1,y - 2);
+                        if(prevBoard[topRight.getX()][topRight.getY()] == captureePiece) {
+                            //can capture top left
+                            return true;
+                        }
+                    }
+                } else if(color == BLACK) {
+                    //capturing
+                    if(x > 0 && y == 4) {
+                        Tuple<Integer, Integer> bottomLeft = new Tuple<>(x - 1,y + 2);
+                        if(prevBoard[bottomLeft.getX()][bottomLeft.getY()] == captureePiece) {
+                            //can capture top left
+                            return true;
+                        }
+                    }
+                    if(x < 7 && y == 4) {
+                        Tuple<Integer, Integer> bottomRight = new Tuple<>(x + 1,y + 2);
+                        if(prevBoard[bottomRight.getX()][bottomRight.getY()] == captureePiece) {
+                            //can capture top left
+                            return true;
+                        }
+                    }
+                }
+            }
+        } catch (NoSuchPieceException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canPromote(Tuple<Integer,Integer> pawn) {
+        if(turn == WHITE) {
+            return pawn.getY() == 0;
+        } else if(turn == BLACK) {
+            return pawn.getY() == 7;
+        }
+        return false;
+    }
+    //------------------------ROOK-----------------------------------
+    @Override
+    public boolean moveRook(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords) {
+        return false;
+    }
+
+    @Override
+    public ArrayList<Tuple<Integer, Integer>> getRookMoves(Tuple<Integer,Integer> rook) {
+        return null;
+    }
+    //------------------------KNIGHT-----------------------------------
+    @Override
+    public boolean moveKnight(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords) {
+        return false;
+    }
+
+    @Override
+    public ArrayList<Tuple<Integer, Integer>> getKnightMoves(Tuple<Integer,Integer> knight) {
+        return null;
+    }
+    //------------------------BISHOP-----------------------------------
+    @Override
+    public boolean moveBishop(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords) {
+        return false;
+    }
+
+    @Override
+    public ArrayList<Tuple<Integer, Integer>> getBishopMoves(Tuple<Integer,Integer> bishop) {
+        return null;
+    }
+    //------------------------QUEEN-----------------------------------
+    @Override
+    public boolean moveQueen(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords) {
+        return false;
+    }
+
+    @Override
+    public ArrayList<Tuple<Integer, Integer>> getQueenMoves(Tuple<Integer,Integer> queen) {
+        return null;
+    }
+    //------------------------KING-----------------------------------
+    @Override
+    public boolean moveKing(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords) {
+        return false;
+    }
+
+    @Override
+    public boolean isCheck(int player) {
+        return false;
+    }
+
+    @Override
+    public ArrayList<Tuple<Integer, Integer>> getKingMoves(Tuple<Integer,Integer> king) {
+        return null;
+    }
+
+    @Override
+    public boolean isCheckmate(int player) {
+        return false;
+    }
+    //------------------------REST-----------------------------------
 
     @Override
     public Tuple<Integer, Integer> convertStringToCoords(String field) {
@@ -172,104 +494,163 @@ public class ChessGame implements iGame2dPlus, iChessGame {
         return new Tuple<>(x,y);
     }
 
-    @Override
-    public boolean move(String from, String to) {
-        return false;
+    public String convertCoordsToString(Tuple<Integer, Integer> field) {
+        String f = "";
+        switch (field.getX()) {
+            case 0:
+                f+='a';
+                break;
+            case 1:
+                f+='b';
+                break;
+            case 2:
+                f+='c';
+                break;
+            case 3:
+                f+='d';
+                break;
+            case 4:
+                f+='e';
+                break;
+            case 5:
+                f+='f';
+                break;
+            case 6:
+                f+='g';
+                break;
+            case 7:
+                f+='h';
+                break;
+        }
+        int rank = -field.getY() + 8;
+        f += rank;
+        return f;
+    }
+
+    public String convertPieceIDString(int piece) throws NoSuchPieceException {
+        switch(piece) {
+            case W_PAWN_A:
+            case W_PAWN_B:
+            case W_PAWN_C:
+            case W_PAWN_D:
+            case W_PAWN_E:
+            case W_PAWN_F:
+            case W_PAWN_G:
+            case W_PAWN_H:
+                return "white pawn";
+            case B_PAWN_A:
+            case B_PAWN_B:
+            case B_PAWN_C:
+            case B_PAWN_D:
+            case B_PAWN_E:
+            case B_PAWN_F:
+            case B_PAWN_G:
+            case B_PAWN_H:
+                return "black pawn";
+            case W_ROOK_BF:
+            case W_ROOK_WF:
+                return "white rook";
+            case B_ROOK_BF:
+            case B_ROOK_WF:
+                return "black rook";
+            case W_KNIGHT_BF:
+            case W_KNIGHT_WF:
+                return "white knight";
+            case B_KNIGHT_BF:
+            case B_KNIGHT_WF:
+                return "black knight";
+            case W_BISHOP_BF:
+            case W_BISHOP_WF:
+                return "white bishop";
+            case B_BISHOP_BF:
+            case B_BISHOP_WF:
+                return "black bishop";
+            case W_KING:
+                return "white king";
+            case B_KING:
+                return "black king";
+            case W_QUEEN:
+                return "white queen";
+            case B_QUEEN:
+                return "black queen";
+            case EMPTY:
+                return "empty";
+        }
+        throw new NoSuchPieceException(piece);
+    }
+    public int convertPieceIDValue(int piece) throws NoSuchPieceException {
+        switch(piece) {
+            case W_PAWN_A:
+            case W_PAWN_B:
+            case W_PAWN_C:
+            case W_PAWN_D:
+            case W_PAWN_E:
+            case W_PAWN_F:
+            case W_PAWN_G:
+            case W_PAWN_H:
+                return PAWN_VALUE;
+            case B_PAWN_A:
+            case B_PAWN_B:
+            case B_PAWN_C:
+            case B_PAWN_D:
+            case B_PAWN_E:
+            case B_PAWN_F:
+            case B_PAWN_G:
+            case B_PAWN_H:
+                return -PAWN_VALUE;
+            case W_ROOK_BF:
+            case W_ROOK_WF:
+                return ROOK_VALUE;
+            case B_ROOK_BF:
+            case B_ROOK_WF:
+                return -ROOK_VALUE;
+            case W_KNIGHT_BF:
+            case W_KNIGHT_WF:
+                return KNIGHT_VALUE;
+            case B_KNIGHT_BF:
+            case B_KNIGHT_WF:
+                return -KNIGHT_VALUE;
+            case W_BISHOP_BF:
+            case W_BISHOP_WF:
+                return BISHOP_VALUE;
+            case B_BISHOP_BF:
+            case B_BISHOP_WF:
+                return -BISHOP_VALUE;
+            case W_QUEEN:
+                return QUEEN_VALUE;
+            case B_QUEEN:
+                return -QUEEN_VALUE;
+            default:
+                return 0;
+        }
+    }
+
+    public int getColor(int piece) {
+        int abs = Math.abs(piece);
+        return piece/abs == 1 ? WHITE : BLACK;
+    }
+
+    public boolean isEmpty(Tuple<Integer, Integer> field) {
+        return board[field.getX()][field.getY()] == EMPTY;
     }
 
     @Override
-    public boolean isRisked(String field) {
-        return false;
+    public void changeTurn() {
+        if(turn == WHITE) {
+            turn = BLACK;
+        }else if(turn == BLACK) {
+            turn = WHITE;
+        }
     }
-
     @Override
-    public boolean movePawn(String from, String to) {
-        return false;
-    }
-
-    @Override
-    public ArrayList<String> getPawnMoves(String pawn) {
-        return null;
-    }
-
-    @Override
-    public boolean canCaptureEnPassant(String capturer, String capturee) {
-        return false;
-    }
-
-    @Override
-    public boolean canPromote(String pawn, int valueOfPiece) {
-        return false;
-    }
-
-    @Override
-    public boolean moveRook(String from, String to) {
-        return false;
-    }
-
-    @Override
-    public ArrayList<String> getRookMoves(String rook) {
-        return null;
-    }
-
-    @Override
-    public boolean moveKnight(String from, String to) {
-        return false;
-    }
-
-    @Override
-    public ArrayList<String> getKnightMoves(String knight) {
-        return null;
-    }
-
-    @Override
-    public boolean moveBishop(String from, String to) {
-        return false;
-    }
-
-    @Override
-    public ArrayList<String> getBishopMoves(String bishop) {
-        return null;
-    }
-
-    @Override
-    public boolean moveQueen(String from, String to) {
-        return false;
-    }
-
-    @Override
-    public ArrayList<String> getQueenMoves(String queen) {
-        return null;
-    }
-
-    @Override
-    public boolean moveKing(String from, String to) {
-        return false;
-    }
-
-    @Override
-    public boolean isCheck(int player) {
-        return false;
-    }
-
-    @Override
-    public ArrayList<String> getKingMoves(String king) {
-        return null;
-    }
-
-    @Override
-    public boolean isCheckmate(int player) {
-        return false;
-    }
-
-    @Override
-    public void log() {
-
+    public void log(String s) {
+        System.out.println(s);
+        moveLog.add(s);
     }
 
     @Override
     public ArrayList<String> getLog() {
-        return null;
+        return moveLog;
     }
 
     @Override
@@ -277,7 +658,11 @@ public class ChessGame implements iGame2dPlus, iChessGame {
         score = 0;
         for(int x = 0; x < board.length; x++) {
             for(int y = 0; y < board.length; y++) {
-                score += board[x][y];
+                try {
+                    score += convertPieceIDValue(board[x][y]);
+                } catch (NoSuchPieceException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return score;

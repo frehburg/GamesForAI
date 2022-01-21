@@ -1,17 +1,21 @@
 package Snake.Representation;
 
 import Interfaces.iState;
+import Snake.Interfaces.iSnake;
 import Snake.enums.SnakeField;
+import Utils.Tuple;
 
 public class SnakeState implements iState {
     private final boolean gameOver;
     private final int score;
     private final SnakeField[][] board;
+    private final iSnake snake;
     private int[][] idBoard;
-    public SnakeState(boolean gameOver, int score, SnakeField[][] board) {
+    public SnakeState(boolean gameOver, int score, SnakeField[][] board, iSnake snake) {
         this.gameOver = gameOver;
         this.score = score;
         this.board = board;
+        this.snake = snake;
     }
 
     @Override
@@ -52,5 +56,9 @@ public class SnakeState implements iState {
     @Override
     public boolean isWon() {
         return false;
+    }
+
+    public iSnake getSnake() {
+        return snake;
     }
 }

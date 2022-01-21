@@ -1,8 +1,10 @@
 package Snake.Representation;
 
+import Interfaces.iAgent;
 import Interfaces.iHandler;
 import Interfaces.iState;
 import Interfaces.iTileGUI;
+import Snake.agents.SnakeBaseLineAgent;
 import Snake.enums.SnakeBoardSize;
 import Snake.enums.SnakeField;
 import Snake.enums.SnakeSpeed;
@@ -85,6 +87,7 @@ public class SnakeHandler implements iHandler {
     @Override
     public void game() {
         SnakeGame game = new SnakeGame(snakeBoardSize, snakeSpeed, p);
+        iAgent agent = new SnakeBaseLineAgent(p);
         //with colors
         gui = new TileGUI2dDiscrete(km,null,this,game, TileSize.SMALL, "Snake", colorMapping);//new SnakeGUI(km, this,game);//
         //with images
@@ -96,6 +99,7 @@ public class SnakeHandler implements iHandler {
                 //System.out.println(System.currentTimeMillis() - cur);
             }
             cur = System.currentTimeMillis();
+            agent.react(game.getState());
             game.updateBoard();
             gui.render(game.getState());
         }

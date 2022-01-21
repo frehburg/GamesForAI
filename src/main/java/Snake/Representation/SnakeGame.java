@@ -96,7 +96,7 @@ public class SnakeGame extends iSnakeGame implements iGame {
             }
         }
 
-        int pelletPosition = RandomUtils.getRandom(0, placable.size());
+        int pelletPosition = RandomUtils.getRandom(0, placable.size() - 1);
         Tuple<Integer, Integer> field = placable.get(pelletPosition);
         board[field.getX()][field.getY()] = SnakeField.PELLET;
     }
@@ -258,7 +258,7 @@ public class SnakeGame extends iSnakeGame implements iGame {
 
     @Override
     public SnakeState getState() {
-        return new SnakeState(gameOver, score, board);
+        return new SnakeState(gameOver, score, board, snake);
     }
 
     @Override

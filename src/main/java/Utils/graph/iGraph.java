@@ -63,6 +63,15 @@ public interface iGraph<E> {
     boolean removeEdge(int id1, int id2);
 
     /**
+     * Returns true if the vertices exist and are adjacent,
+     * false if not
+     * @param id1 vertex
+     * @param id2 vertex
+     * @return whether the vertices are adjacent
+     */
+    boolean adjacent(int id1, int id2);
+
+    /**
      * Returns a list of the neighbors of the vertex.
      * If the vertex does not exist, an empty list is returned.
      * @param id vertex
@@ -71,12 +80,24 @@ public interface iGraph<E> {
     List<Integer> getNeighbors(int id);
 
     /**
-     * Returns a list of vertices, that in the given order form a shortest path from the vertex id1
-     * to vertex id2
+     * Returns a list of adjacent vertices, that in the given
+     * order form a shortest path from the vertex id1 to vertex id2
      * @param id1 first vertex
      * @param id2 second vertex
      * @return shortest path from id1 to id2
      */
     List<Integer> getShortestPaths(int id1, int id2);
+
+    /**
+     * Returns |V| or n
+     * @return
+     */
+    int getAmountOfVertices();
+
+    /**
+     * Returns |E| or m
+     * @return
+     */
+    int getAmountOfEdges();
 
 }

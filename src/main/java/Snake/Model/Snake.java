@@ -1,4 +1,4 @@
-package Snake.Representation;
+package Snake.Model;
 
 import Snake.Interfaces.iSnake;
 import Snake.enums.SnakeDirection;
@@ -7,7 +7,7 @@ import Utils.Tuple;
 
 import java.util.ArrayList;
 
-import static Snake.Representation.SnakeGame.mapDirectionToField;
+import static Snake.Model.SnakeGame.mapDirectionToField;
 
 public class Snake extends iSnake {
     private ArrayList<Tuple<SnakeDirection,Tuple<Integer,Integer>>> body;

@@ -1,4 +1,4 @@
-package Snake.Representation;
+package Snake.Model;
 
 import Snake.Interfaces.iSnakeGame;
 import Snake.enums.SnakeDirection;

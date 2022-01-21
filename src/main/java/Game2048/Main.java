@@ -1,6 +1,6 @@
 package Game2048;
 
-import Game2048.Representation.Handler2048;
+import Game2048.Model.Handler2048;
 
 public class Main {
     public static void main(String[] args) {

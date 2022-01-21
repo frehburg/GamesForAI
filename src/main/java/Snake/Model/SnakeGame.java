@@ -1,4 +1,4 @@
-package Snake.Representation;
+package Snake.Model;
 
 import Interfaces.iGame;
 import Snake.Interfaces.iSnakeGame;

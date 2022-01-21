@@ -1,10 +1,9 @@
-package Snake.Representation;
+package Snake.Model;
 
 import Interfaces.iAgent;
 import Interfaces.iHandler;
 import Interfaces.iState;
 import Interfaces.iTileGUI;
-import Snake.agents.SnakeBaseLineAgent;
 import Snake.agents.SnakeSimpleReflexAgent;
 import Snake.enums.SnakeBoardSize;
 import Snake.enums.SnakeField;

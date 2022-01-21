@@ -1,4 +1,4 @@
-package Chess.Representation;
+package Chess.Model;
 
 import Interfaces.iState;
 

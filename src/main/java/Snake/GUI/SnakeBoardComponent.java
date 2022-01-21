@@ -1,6 +1,6 @@
 package Snake.GUI;
 
-import Snake.Representation.SnakeState;
+import Snake.Model.SnakeState;
 import Snake.enums.SnakeField;
 
 import javax.swing.*;

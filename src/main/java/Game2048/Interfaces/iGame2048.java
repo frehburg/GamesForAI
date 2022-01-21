@@ -1,6 +1,6 @@
 package Game2048.Interfaces;
 
-import Game2048.Representation.State2048;
+import Game2048.Model.State2048;
 import Game2048.enums.BoardSize2048;
 import Game2048.enums.Direction2048;
 import Game2048.enums.Field2048;

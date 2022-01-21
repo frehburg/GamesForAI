@@ -3,10 +3,10 @@ package Snake.GUI;
 import Interfaces.iGame;
 import Interfaces.iHandler;
 import Interfaces.iState;
-import Snake.Representation.SnakeGame;
-import Snake.Representation.SnakeHandler;
-import Snake.Representation.SnakeKeyManager;
-import Snake.Representation.SnakeState;
+import Snake.Model.SnakeGame;
+import Snake.Model.SnakeHandler;
+import Snake.Model.SnakeKeyManager;
+import Snake.Model.SnakeState;
 import Snake.enums.SnakeField;
 import Interfaces.iTileGUI;
 
@@ -15,7 +15,6 @@ import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public class SnakeGUI implements iTileGUI{

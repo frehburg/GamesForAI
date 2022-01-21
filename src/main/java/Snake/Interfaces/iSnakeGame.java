@@ -1,6 +1,6 @@
 package Snake.Interfaces;
 
-import Snake.Representation.SnakeState;
+import Snake.Model.SnakeState;
 import Snake.enums.SnakeBoardSize;
 import Snake.enums.SnakeDirection;
 import Snake.enums.SnakeSpeed;

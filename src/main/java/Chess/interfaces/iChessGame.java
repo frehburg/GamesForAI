@@ -1,11 +1,12 @@
 package Chess.interfaces;
 
 import Chess.exceptions.NoPieceInFieldException;
+import Interfaces.iGame2dPlus;
 import Utils.Tuple;
 
 import java.util.ArrayList;
 
-public interface iChessGame {
+public interface iChessGame extends iGame2dPlus {
     //FIELDS
     String
             A1 = "a1", A2 = "a2", A3 = "a3", A4 = "a4", A5 = "a5", A6 = "a6", A7 = "a7", A8= "a8",
@@ -100,7 +101,6 @@ public interface iChessGame {
     /**
      * Returns true if the pawn has reached the last file
      * @param pawn Chess field with pawn
-     * @param valueOfPiece Value of the piece the pawn should be turned into
      * @return Whether the pawn in pawn can be promoted
      */
     boolean canPromote(Tuple<Integer, Integer> pawn);

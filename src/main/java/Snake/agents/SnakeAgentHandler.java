@@ -1,12 +1,11 @@
 package Snake.agents;
 
 import Interfaces.iAgent;
-import Snake.Representation.SnakeGame;
-import Snake.Representation.SnakePlayer;
-import Snake.Representation.SnakeState;
+import Snake.Model.SnakeGame;
+import Snake.Model.SnakePlayer;
+import Snake.Model.SnakeState;
 import Snake.enums.SnakeBoardSize;
 import Snake.enums.SnakeSpeed;
-import Utils.RandomUtils;
 import Utils.Triple;
 
 import java.util.ArrayList;

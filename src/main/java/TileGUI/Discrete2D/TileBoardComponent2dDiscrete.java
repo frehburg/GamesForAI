@@ -1,6 +1,6 @@
 package TileGUI.Discrete2D;
 
-import Game2048.Representation.State2048;
+import Game2048.Model.State2048;
 import Interfaces.iState;
 
 import javax.swing.*;

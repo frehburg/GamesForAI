@@ -1,4 +1,4 @@
-package Chess.Representation;
+package Chess.Model;
 
 import Chess.exceptions.NoPieceInFieldException;
 import Chess.exceptions.NoSuchPieceException;
@@ -9,7 +9,7 @@ import Utils.Tuple;
 
 import java.util.ArrayList;
 
-public class ChessGame implements iGame2dPlus, iChessGame {
+public class ChessGame implements iChessGame {
     private int[][] board;
     private int[][] prevBoard;
     private int[][] prev2Board;
@@ -401,11 +401,45 @@ public class ChessGame implements iGame2dPlus, iChessGame {
     //------------------------ROOK-----------------------------------
     @Override
     public boolean moveRook(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords) {
+        try {
+            ArrayList<Tuple<Integer,Integer>> moves = getRookMoves(fromCoords);
+            for(Tuple<Integer, Integer> t : moves) {
+                //the requested move is a valid move
+                if(t.getX() == toCoords.getX() && t.getY() == toCoords.getY()) {
+                    //then actually move
+                    prev2Board = ArrayUtils.copyArray(prevBoard);
+                    prevBoard = ArrayUtils.copyArray(board);
+                    log("Moved " + convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
+                            + convertCoordsToString(fromCoords) + " to " + convertCoordsToString(toCoords) + "("+
+                            convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
+                    board[toCoords.getX()][toCoords.getY()] = board[fromCoords.getX()][fromCoords.getY()];
+                    board[fromCoords.getX()][fromCoords.getY()] = EMPTY;
+
+                    //change turn
+                    changeTurn();
+
+                    return true;
+                }
+                //else nothing happens
+            }
+        } catch (NoSuchPieceException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
     public ArrayList<Tuple<Integer, Integer>> getRookMoves(Tuple<Integer,Integer> rook) {
+        ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>();
+        int x = rook.getX(), y = rook.getY();;
+        int piece = board[rook.getX()][rook.getY()];
+        int color = getColor(piece);
+        //TODO: implement
+        //rook can move down the file or down the rank
+        //up
+        //down
+        //left
+        //right
         return null;
     }
     //------------------------KNIGHT-----------------------------------

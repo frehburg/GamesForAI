@@ -1,4 +1,4 @@
-package Game2048.Representation;
+package Game2048.Model;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

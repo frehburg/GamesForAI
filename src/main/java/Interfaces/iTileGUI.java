@@ -1,14 +1,8 @@
 package Interfaces;
 
-import Interfaces.iGame;
-import Interfaces.iHandler;
-import Interfaces.iState;
-import Snake.Representation.SnakeState;
-
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public interface iTileGUI {

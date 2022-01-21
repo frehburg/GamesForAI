@@ -1,6 +1,4 @@
-package Chess.Representation;
-
-import Chess.interfaces.iChessGame;
+package Chess.Model;
 
 public class Main {
     //assets: https://github.com/Ka-hu/chess-pieces/tree/master/boards

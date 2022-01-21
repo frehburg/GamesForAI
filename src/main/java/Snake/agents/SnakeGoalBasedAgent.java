@@ -2,8 +2,8 @@ package Snake.agents;
 
 import Interfaces.iAgent;
 import Interfaces.iState;
-import Snake.Representation.SnakePlayer;
-import Snake.Representation.SnakeState;
+import Snake.Model.SnakePlayer;
+import Snake.Model.SnakeState;
 
 public class SnakeGoalBasedAgent implements iAgent {
     public static final int UP = 0, LEFT = 1, DOWN = 2, RIGHT = 3;

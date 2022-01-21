@@ -1,9 +1,7 @@
-package Game2048.Representation;
+package Game2048.Model;
 
 import Game2048.enums.Field2048;
 import Interfaces.iState;
-import Snake.Representation.SnakeState;
-import Snake.enums.SnakeField;
 
 public class State2048 implements iState {
     private final boolean gameOver;

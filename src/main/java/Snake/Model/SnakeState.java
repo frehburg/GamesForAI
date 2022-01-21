@@ -1,9 +1,8 @@
-package Snake.Representation;
+package Snake.Model;
 
 import Interfaces.iState;
 import Snake.Interfaces.iSnake;
 import Snake.enums.SnakeField;
-import Utils.Tuple;
 
 public class SnakeState implements iState {
     private final boolean gameOver;

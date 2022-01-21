@@ -2,7 +2,7 @@ package Snake.agents;
 
 import Interfaces.iAgent;
 import Interfaces.iState;
-import Snake.Representation.SnakePlayer;
+import Snake.Model.SnakePlayer;
 import Utils.RandomUtils;
 
 /**

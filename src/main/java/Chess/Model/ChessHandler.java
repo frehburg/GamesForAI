@@ -1,6 +1,5 @@
-package Chess.Representation;
+package Chess.Model;
 
-import Chess.exceptions.NoPieceInFieldException;
 import Interfaces.iHandler;
 import Interfaces.iState;
 import Chess.interfaces.iChessGame;

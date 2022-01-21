@@ -1,7 +1,4 @@
-package Snake.Representation;
-
-import Snake.Interfaces.iSnakeGame;
-import Snake.enums.SnakeDirection;
+package Snake.Model;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

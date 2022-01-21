@@ -1,9 +1,7 @@
 package TileGUI.Discrete2DPlus;
 
-import Chess.Representation.ChessState;
-import Chess.interfaces.iChessGame;
-import Game2048.Representation.State2048;
-import Interfaces.iState;
+import Chess.Model.ChessState;
+import Game2048.Model.State2048;
 import Interfaces.iState2dPlus;
 
 import javax.swing.*;

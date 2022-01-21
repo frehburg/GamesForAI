@@ -1,6 +1,6 @@
 package Snake;
 
-import Snake.Representation.SnakeHandler;
+import Snake.Model.SnakeHandler;
 
 public class Main {
     public static void main(String[] args) {

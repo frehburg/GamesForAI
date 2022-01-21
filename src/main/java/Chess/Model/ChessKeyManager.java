@@ -1,6 +1,4 @@
-package Chess.Representation;
-
-import UserInput.KeyManager;
+package Chess.Model;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

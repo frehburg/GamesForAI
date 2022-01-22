@@ -6,11 +6,9 @@ import Chess.interfaces.iChessGame;
 import TileGUI.Discrete2DPlus.TileGUI2dDiscretePlus;
 import TileGUI.enums.TileSize;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ChessHandler implements iHandler {
-    private ArrayList<Object> highscores;
     private ChessPlayer p;
     private HashMap<Integer, String> spriteMapping;
     private TileGUI2dDiscretePlus gui;
@@ -21,7 +19,6 @@ public class ChessHandler implements iHandler {
 
     @Override
     public void init() {
-        highscores = new ArrayList<>();
         p = new ChessPlayer();
         //km = new ChessKeyManager();
         //mm = new ChessMouseManager();

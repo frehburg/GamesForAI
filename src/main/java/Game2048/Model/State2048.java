@@ -8,7 +8,7 @@ public class State2048 implements iState {
     private final int score;
     private final Field2048[][] board;
     private int[][] idBoard;
-    private boolean won;
+    private final boolean won;
 
     public State2048(boolean gameOver, boolean won, int score, Field2048[][] board) {
         this.gameOver = gameOver;

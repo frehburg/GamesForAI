@@ -11,6 +11,7 @@ import Utils.RandomUtils;
 import Utils.Tuple;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 //TODO: Check bug where snake cannot pick up pellet in bottom left corner coming straight down
 public class SnakeGame extends iSnakeGame implements iGame {
@@ -32,43 +33,22 @@ public class SnakeGame extends iSnakeGame implements iGame {
         score = 0;
         direction = SnakeDirection.RIGHT;
         switch (speed) {
-            case SIMPLE:
-                this.speed = SIMPLE_SPEED;
-                break;
-            case EASY:
-                this.speed = EASY_SPEED;
-                break;
-            case MEDIUM:
-                this.speed = MEDIUM_SPEED;
-                break;
-            case HARD:
-                this.speed = HARD_SPEED;
-                break;
-            case INSANE:
-                this.speed = INSANE_SPEED;
-                break;
+            case SIMPLE -> this.speed = SIMPLE_SPEED;
+            case EASY -> this.speed = EASY_SPEED;
+            case MEDIUM -> this.speed = MEDIUM_SPEED;
+            case HARD -> this.speed = HARD_SPEED;
+            case INSANE -> this.speed = INSANE_SPEED;
         }
-        int iSize = 0;
-        switch (size) {
-            case SMALL:
-                iSize = SMALL_BOARD_SIZE;
-                break;
-            case STANDARD:
-                iSize = STANDARD_BOARD_SIZE;
-                break;
-            case BIG:
-                iSize = BIG_BOARD_SIZE;
-                break;
-            case HUGE:
-                iSize = HUGE_BOARD_SIZE;
-                break;
-        }
+        int iSize = switch (size) {
+            case SMALL -> SMALL_BOARD_SIZE;
+            case STANDARD -> STANDARD_BOARD_SIZE;
+            case BIG -> BIG_BOARD_SIZE;
+            case HUGE -> HUGE_BOARD_SIZE;
+        };
 
         board = new SnakeField[iSize][iSize];
-        for(int x = 0; x < board.length; x++) {
-            for(int y = 0; y < board[x].length; y++) {
-                board[x][y] = SnakeField.EMPTY;
-            }
+        for (SnakeField[] snakeFields : board) {
+            Arrays.fill(snakeFields, SnakeField.EMPTY);
         }
 
         snake = new Snake(new Tuple<>(SnakeDirection.RIGHT, new Tuple<>(board.length/2,board.length/2)),
@@ -191,30 +171,21 @@ public class SnakeGame extends iSnakeGame implements iGame {
      * @return
      */
     public static SnakeField mapDirectionToField(SnakeDirection d) {
-        switch (d) {
-            case DOWN: return SnakeField.DOWN;
-            case LEFT: return SnakeField.LEFT;
-            case UP: return SnakeField.UP;
-            case RIGHT: return SnakeField.RIGHT;
-        }
-        return null;
+        return switch (d) {
+            case DOWN -> SnakeField.DOWN;
+            case LEFT -> SnakeField.LEFT;
+            case UP -> SnakeField.UP;
+            case RIGHT -> SnakeField.RIGHT;
+        };
     }
 
     public static Tuple<Integer, Integer> mapDirectionToDelta(SnakeDirection d) {
         int xDelt = 0, yDelt = 0;
-        switch(d) {
-            case DOWN:
-                yDelt = +1;
-                break;
-            case UP:
-                yDelt = -1;
-                break;
-            case RIGHT:
-                xDelt = +1;
-                break;
-            case LEFT:
-                xDelt = -1;
-                break;
+        switch (d) {
+            case DOWN -> yDelt = +1;
+            case UP -> yDelt = -1;
+            case RIGHT -> xDelt = +1;
+            case LEFT -> xDelt = -1;
         }
         return new Tuple<>(xDelt, yDelt);
     }

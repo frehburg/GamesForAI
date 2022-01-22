@@ -11,10 +11,10 @@ import Utils.Triple;
 import java.util.ArrayList;
 
 public class SnakeAgentHandler {
-    private iAgent agent;
-    private SnakePlayer player;
-    private SnakeBoardSize snakeBoardSize;
-    private SnakeSpeed snakeSpeed;
+    private final iAgent agent;
+    private final SnakePlayer player;
+    private final SnakeBoardSize snakeBoardSize;
+    private final SnakeSpeed snakeSpeed;
 
     public SnakeAgentHandler() {
         this.player = new SnakePlayer();
@@ -43,7 +43,7 @@ public class SnakeAgentHandler {
                     " minimum score: " + min);
         }
         double avg = sum /(double) games;
-        return new Triple<Double, Double, Double>(avg, max, min);
+        return new Triple<>(avg, max, min);
     }
 
     private int play() {

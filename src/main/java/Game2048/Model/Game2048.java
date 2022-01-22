@@ -135,42 +135,40 @@ public class Game2048 extends iGame2048 implements iGame {
             for(int i = 0; i < size.getSize(); i++) {
                 newRow[i] = Field2048.EMPTY;
             }
-            inner:for(int y = size.getSize() - 1; y >= 0; y--) {
-                if(b[x][y].getPower()==Field2048.EMPTY.getPower()) {//nothing happens if the field is empty
-                    continue inner;
+            for (int y = size.getSize() - 1; y >= 0; y--) {
+                if (b[x][y].getPower() == Field2048.EMPTY.getPower()) {//nothing happens if the field is empty
+                    continue;
                 }
-                if(y == 0) {//add last bit if it hasnt been added
+                if (y == 0) {//add last bit if it hasnt been added
                     newRow[y] = b[x][y];
-                    continue inner;
+                    continue;
                 }
                 boolean added = false;
                 //System.out.println("x: "+x+" y: "+y+" "+b[x][y]);
-                innerest:for(int y2 = y - 1; y2 >= 0; y2--) {//go through under it
+                for (int y2 = y - 1; y2 >= 0; y2--) {//go through under it
                     //System.out.println("x: "+x+" y: "+y2+" "+b[x][y2]);
-                    if(b[x][y].getPower()== b[x][y2].getPower()) {//Add two together
-                        System.out.println("Hello");
+                    if (b[x][y].getPower() == b[x][y2].getPower()) {//Add two together
                         added = true;
                         int newPower = b[x][y].getPower() + 1;
                         newRow[y] = new Field2048(newPower);
-                        int deltaScore = (int) Math.pow(2,newPower);
+                        int deltaScore = (int) Math.pow(2, newPower);
                         score += deltaScore;
                         b[x][y] = Field2048.EMPTY;
                         b[x][y2] = Field2048.EMPTY;
 
-                        if(deltaScore == 2048) {//means a 2048 block was created
+                        if (deltaScore == 2048) {//means a 2048 block was created
                             won = true;
                             //gameOver = true;
                         }
 
                         somethingMoved = true;
-                        break innerest;
+                        break;
                     }
-                    if(b[x][y].getPower() != b[x][y2].getPower() && b[x][y2].getPower() != Field2048.EMPTY.getPower()) {
-                        System.out.println("hello");
-                        break innerest;
+                    if (b[x][y].getPower() != b[x][y2].getPower() && b[x][y2].getPower() != Field2048.EMPTY.getPower()) {
+                        break;
                     }
                 }
-                if(!added) {
+                if (!added) {
                     newRow[y] = b[x][y];
                 }
             }
@@ -179,11 +177,11 @@ public class Game2048 extends iGame2048 implements iGame {
         // 2. gravity
         for(int i = 0; i < size.getSize() - 1; i++) {
             for(int x = 0; x < size.getSize(); x++) {
-                inner:for(int y = 0; y < size.getSize() - 1; y++) {
-                    if(b[x][y].equals(Field2048.EMPTY)) {
-                        continue inner;
+                for (int y = 0; y < size.getSize() - 1; y++) {
+                    if (b[x][y].equals(Field2048.EMPTY)) {
+                        continue;
                     }
-                    if(b[x][y + 1].equals(Field2048.EMPTY)) {
+                    if (b[x][y + 1].equals(Field2048.EMPTY)) {
                         b[x][y + 1] = b[x][y];
                         b[x][y] = Field2048.EMPTY;
                         somethingMoved = true;
@@ -232,11 +230,6 @@ public class Game2048 extends iGame2048 implements iGame {
     }
 
     @Override
-    public boolean isSwipable(Direction2048 direction) {
-        return false;
-    }
-
-    @Override
     public BoardSize2048 getSize() {
         return size;
     }
@@ -252,21 +245,18 @@ public class Game2048 extends iGame2048 implements iGame {
     }
 
     public String getString(Field2048[][] a) {
-        String s = "--------------------------------------------\n";
+        StringBuilder s = new StringBuilder("--------------------------------------------\n");
         for(int y = 0; y < size.getSize(); y++) {
-            s += "|";
+            s.append("|");
             for(int x = 0; x < size.getSize(); x++) {
-                s += a[x][y] + "|";
+                s.append(a[x][y]).append("|");
             }
-            s+="\n";
+            s.append("\n");
         }
-        return s;
+        return s.toString();
     }
 
     public State2048 getState() {
         return new State2048(gameOver,won,score,board);
-    }
-
-    public void updateBoard() {
     }
 }

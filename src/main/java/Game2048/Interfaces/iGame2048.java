@@ -10,7 +10,6 @@ public abstract class iGame2048 {
 
     public abstract void addRandom();
     public abstract void swipe(Direction2048 direction);
-    public abstract boolean isSwipable(Direction2048 direction);
     public abstract BoardSize2048 getSize();
     public abstract Field2048[][] getBoard();
 

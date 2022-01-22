@@ -1,8 +1,8 @@
 package Utils;
 
 public class Tuple <X, Y> {
-    private X x;
-    private Y y;
+    private final X x;
+    private final Y y;
 
     public Tuple(X x, Y y) {
         this.x = x;
@@ -29,13 +29,10 @@ public class Tuple <X, Y> {
             if(!t.getX().equals(x)) {
                 return false;
             }
-            if(!t.getY().equals(y)) {
-                return false;
-            }
+            return t.getY().equals(y);
         } else {
             return false;
         }
-        return true;
     }
 
     @Override

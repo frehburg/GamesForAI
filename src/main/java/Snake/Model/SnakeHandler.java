@@ -69,12 +69,7 @@ public class SnakeHandler implements iHandler {
     @Override
     public void addToHighScores(iState state) {
         highscores.add(new Tuple<>("Bob",state.getScore()));
-        highscores.sort(new Comparator<Tuple<String,Integer>>() {
-            @Override
-            public int compare(Tuple<String,Integer> o1, Tuple<String,Integer> o2) {
-                return -Integer.compare(o1.getY(),o2.getY());
-            }
-        });
+        highscores.sort((o1, o2) -> -Integer.compare(o1.getY(),o2.getY()));
         System.out.println("--------------------------------");
         System.out.println("           Highscores");
         System.out.println("--------------------------------");

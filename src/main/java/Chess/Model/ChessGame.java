@@ -198,8 +198,6 @@ public class ChessGame implements iChessGame {
                 case W_QUEEN:
                 case B_QUEEN:
                     return moveQueen(fromCoords, toCoords);
-                case EMPTY:
-                    return false;
             }
         }
         return false;
@@ -241,9 +239,7 @@ public class ChessGame implements iChessGame {
                 }
                 //else nothing happens
             }
-        } catch (NoPieceInFieldException e) {
-            e.printStackTrace();
-        } catch (NoSuchPieceException e) {
+        } catch (NoPieceInFieldException | NoSuchPieceException e) {
             e.printStackTrace();
         }
         return false;
@@ -253,7 +249,7 @@ public class ChessGame implements iChessGame {
     public ArrayList<Tuple<Integer, Integer>> getPawnMoves(Tuple<Integer,Integer> pawn) throws NoPieceInFieldException {
         //expects that the right player is at turn and that there is a pawn in the field
         ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>();
-        int x = pawn.getX(), y = pawn.getY();;
+        int x = pawn.getX(), y = pawn.getY();
         int piece = board[pawn.getX()][pawn.getY()];
         int color = getColor(piece);
         if(color == WHITE) {
@@ -432,9 +428,6 @@ public class ChessGame implements iChessGame {
     @Override
     public ArrayList<Tuple<Integer, Integer>> getRookMoves(Tuple<Integer,Integer> rook) {
         ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>();
-        int x = rook.getX(), y = rook.getY();;
-        int piece = board[rook.getX()][rook.getY()];
-        int color = getColor(piece);
         //rook can move down the file or down the rank
         //up
         Tuple<Integer, Integer> t = rook.clone();
@@ -512,9 +505,6 @@ public class ChessGame implements iChessGame {
     @Override
     public ArrayList<Tuple<Integer, Integer>> getKnightMoves(Tuple<Integer,Integer> knight) {
         ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>(), possibleMoves = new ArrayList<>();
-        int x = knight.getX(), y = knight.getY();;
-        int piece = board[knight.getX()][knight.getY()];
-        int color = getColor(piece);
         possibleMoves.add(new Tuple<>(knight.getX() - 1, knight.getY() - 2));//top left
         possibleMoves.add(new Tuple<>(knight.getX() + 1, knight.getY() - 2));//top right
         possibleMoves.add(new Tuple<>(knight.getX() - 2, knight.getY() - 1));//left top
@@ -575,7 +565,7 @@ public class ChessGame implements iChessGame {
         ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>();
         moves.addAll(getRookMoves(queen));
         moves.addAll(getBishopMoves(queen));
-        return null;
+        return moves;
     }
     //------------------------KING-----------------------------------
     @Override
@@ -600,9 +590,7 @@ public class ChessGame implements iChessGame {
 
     @Override
     public boolean inBounds(Tuple<Integer, Integer> field) {
-        if(field.getX() >= 0 && field.getX() <= 7 && field.getY() >= 0 && field.getY() <= 7)
-            return true;
-        return false;
+        return field.getX() >= 0 && field.getX() <= 7 && field.getY() >= 0 && field.getY() <= 7;
     }
     //------------------------REST-----------------------------------
 
@@ -612,30 +600,14 @@ public class ChessGame implements iChessGame {
         int rank = Integer.parseInt(field.charAt(1)+"");
         int x = -1, y = 8 - rank;
         switch (file) {
-            case 'a':
-                x = 0;
-                break;
-            case 'b':
-                x = 1;
-                break;
-            case 'c':
-                x = 2;
-                break;
-            case 'd':
-                x = 3;
-                break;
-            case 'e':
-                x = 4;
-                break;
-            case 'f':
-                x = 5;
-                break;
-            case 'g':
-                x = 6;
-                break;
-            case 'h':
-                x = 7;
-                break;
+            case 'a' -> x = 0;
+            case 'b' -> x = 1;
+            case 'c' -> x = 2;
+            case 'd' -> x = 3;
+            case 'e' -> x = 4;
+            case 'f' -> x = 5;
+            case 'g' -> x = 6;
+            case 'h' -> x = 7;
         }
         return new Tuple<>(x,y);
     }
@@ -643,30 +615,14 @@ public class ChessGame implements iChessGame {
     public String convertCoordsToString(Tuple<Integer, Integer> field) {
         String f = "";
         switch (field.getX()) {
-            case 0:
-                f+='a';
-                break;
-            case 1:
-                f+='b';
-                break;
-            case 2:
-                f+='c';
-                break;
-            case 3:
-                f+='d';
-                break;
-            case 4:
-                f+='e';
-                break;
-            case 5:
-                f+='f';
-                break;
-            case 6:
-                f+='g';
-                break;
-            case 7:
-                f+='h';
-                break;
+            case 0 -> f += 'a';
+            case 1 -> f += 'b';
+            case 2 -> f += 'c';
+            case 3 -> f += 'd';
+            case 4 -> f += 'e';
+            case 5 -> f += 'f';
+            case 6 -> f += 'g';
+            case 7 -> f += 'h';
         }
         int rank = -field.getY() + 8;
         f += rank;
@@ -725,50 +681,19 @@ public class ChessGame implements iChessGame {
         throw new NoSuchPieceException(piece);
     }
     public int convertPieceIDValue(int piece) throws NoSuchPieceException {
-        switch(piece) {
-            case W_PAWN_A:
-            case W_PAWN_B:
-            case W_PAWN_C:
-            case W_PAWN_D:
-            case W_PAWN_E:
-            case W_PAWN_F:
-            case W_PAWN_G:
-            case W_PAWN_H:
-                return PAWN_VALUE;
-            case B_PAWN_A:
-            case B_PAWN_B:
-            case B_PAWN_C:
-            case B_PAWN_D:
-            case B_PAWN_E:
-            case B_PAWN_F:
-            case B_PAWN_G:
-            case B_PAWN_H:
-                return -PAWN_VALUE;
-            case W_ROOK_BF:
-            case W_ROOK_WF:
-                return ROOK_VALUE;
-            case B_ROOK_BF:
-            case B_ROOK_WF:
-                return -ROOK_VALUE;
-            case W_KNIGHT_BF:
-            case W_KNIGHT_WF:
-                return KNIGHT_VALUE;
-            case B_KNIGHT_BF:
-            case B_KNIGHT_WF:
-                return -KNIGHT_VALUE;
-            case W_BISHOP_BF:
-            case W_BISHOP_WF:
-                return BISHOP_VALUE;
-            case B_BISHOP_BF:
-            case B_BISHOP_WF:
-                return -BISHOP_VALUE;
-            case W_QUEEN:
-                return QUEEN_VALUE;
-            case B_QUEEN:
-                return -QUEEN_VALUE;
-            default:
-                return 0;
-        }
+        return switch (piece) {
+            case W_PAWN_A, W_PAWN_B, W_PAWN_C, W_PAWN_D, W_PAWN_E, W_PAWN_F, W_PAWN_G, W_PAWN_H -> PAWN_VALUE;
+            case B_PAWN_A, B_PAWN_B, B_PAWN_C, B_PAWN_D, B_PAWN_E, B_PAWN_F, B_PAWN_G, B_PAWN_H -> -PAWN_VALUE;
+            case W_ROOK_BF, W_ROOK_WF -> ROOK_VALUE;
+            case B_ROOK_BF, B_ROOK_WF -> -ROOK_VALUE;
+            case W_KNIGHT_BF, W_KNIGHT_WF -> KNIGHT_VALUE;
+            case B_KNIGHT_BF, B_KNIGHT_WF -> -KNIGHT_VALUE;
+            case W_BISHOP_BF, W_BISHOP_WF -> BISHOP_VALUE;
+            case B_BISHOP_BF, B_BISHOP_WF -> -BISHOP_VALUE;
+            case W_QUEEN -> QUEEN_VALUE;
+            case B_QUEEN -> -QUEEN_VALUE;
+            default -> 0;
+        };
     }
 
     public int getColor(int piece) {
@@ -802,10 +727,10 @@ public class ChessGame implements iChessGame {
     @Override
     public int getScore() {
         score = 0;
-        for(int x = 0; x < board.length; x++) {
-            for(int y = 0; y < board.length; y++) {
+        for (int[] ints : board) {
+            for (int y = 0; y < board.length; y++) {
                 try {
-                    score += convertPieceIDValue(board[x][y]);
+                    score += convertPieceIDValue(ints[y]);
                 } catch (NoSuchPieceException e) {
                     e.printStackTrace();
                 }

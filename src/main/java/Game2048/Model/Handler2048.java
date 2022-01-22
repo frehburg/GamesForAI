@@ -47,7 +47,7 @@ public class Handler2048 implements iHandler {
         colorMapping.put(9, Color.decode("#e3bf29"));//512
         colorMapping.put(10, Color.decode("#e3ba14"));//1024
         colorMapping.put(11, Color.decode("#ebc301"));//2048
-        int eleven = Integer.valueOf("44413f", 16).intValue();
+        int eleven = Integer.valueOf("44413f", 16);
         for(int i = 12; i < 100; i++) {
             eleven += 3000;
             String hex = "#"+Integer.toHexString(eleven);
@@ -68,12 +68,7 @@ public class Handler2048 implements iHandler {
     @Override
     public void addToHighScores(iState state) {
         highscores.add(new Tuple<>("Bob",state.getScore()));
-        highscores.sort(new Comparator<Tuple<String,Integer>>() {
-            @Override
-            public int compare(Tuple<String,Integer> o1, Tuple<String,Integer> o2) {
-                return -Integer.compare(o1.getY(),o2.getY());
-            }
-        });
+        highscores.sort((o1, o2) -> -Integer.compare(o1.getY(),o2.getY()));
         System.out.println("--------------------------------");
         System.out.println("           Highscores");
         System.out.println("--------------------------------");

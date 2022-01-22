@@ -1,11 +1,9 @@
 package Game2048.enums;
 
-import java.util.HashMap;
-
 public class Field2048 {
     public static Field2048 EMPTY = new Field2048();
 
-    private int power;
+    private final int power;
 
     public Field2048(int power) {
         this.power = power;
@@ -28,21 +26,19 @@ public class Field2048 {
             return "    ";
         }
         if(power < 11) {
-            String s = (int)Math.pow(2, power) + "";
+            StringBuilder s = new StringBuilder((int) Math.pow(2, power) + "");
             while(s.length() < 4) {
-                s = " " + s;
+                s.insert(0, " ");
             }
-            return s;
+            return s.toString();
         }
         return "2^"+power;
     }
 
     @Override
     public boolean equals(Object o) {
-        if(o instanceof Field2048) {
-            Field2048 f = (Field2048) o;
-            if(f.getPower() == this.getPower())
-                return true;
+        if(o instanceof Field2048 f) {
+            return f.getPower() == this.getPower();
         }
         return false;
     }

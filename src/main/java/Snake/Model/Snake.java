@@ -25,7 +25,7 @@ public class Snake extends iSnake {
         Tuple<Integer,Integer> delta = SnakeGame.mapDirectionToDelta(direction);
         ArrayList<Tuple<SnakeDirection,Tuple<Integer,Integer>>> temp = new ArrayList<>();
         Tuple<Integer, Integer> grown = new Tuple<>(getHead().getX() + delta.getX(), getHead().getY() + delta.getY());
-        temp.add(new Tuple<SnakeDirection,Tuple<Integer,Integer>>(getHeadDirection(), grown));
+        temp.add(new Tuple<>(getHeadDirection(), grown));
         temp.addAll(body);
         body = temp;
     }
@@ -33,9 +33,8 @@ public class Snake extends iSnake {
     @Override
     public void growAtBack() {
         Tuple<Integer,Integer> delta = SnakeGame.mapDirectionToDelta(getTailDirection());
-        ArrayList<Tuple<SnakeDirection,Tuple<Integer,Integer>>> temp = new ArrayList<>();
         Tuple<Integer, Integer> grown = new Tuple<>(getTail().getX() - delta.getX(), getTail().getY() - delta.getY());
-        body.add(new Tuple<SnakeDirection,Tuple<Integer,Integer>>(getTailDirection(), grown));
+        body.add(new Tuple<>(getTailDirection(), grown));
     }
 
     @Override
@@ -81,7 +80,7 @@ public class Snake extends iSnake {
     public ArrayList<Tuple<SnakeField, Tuple<Integer, Integer>>> getSnakeFields() {
         ArrayList<Tuple<SnakeField, Tuple<Integer, Integer>>> fields = new ArrayList<>();
         for(Tuple<SnakeDirection,Tuple<Integer,Integer>> bodySegment : body) {
-            int x = bodySegment.getY().getX(), y = bodySegment.getY().getY();;
+            int x = bodySegment.getY().getX(), y = bodySegment.getY().getY();
             SnakeDirection d = bodySegment.getX();
             SnakeField f = mapDirectionToField(d);
             fields.add(new Tuple<>(f, new Tuple<>(x,y)));

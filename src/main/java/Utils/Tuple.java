@@ -37,4 +37,9 @@ public class Tuple <X, Y> {
         }
         return true;
     }
+
+    @Override
+    public Tuple<X, Y> clone() {
+        return new Tuple<>(getX(),getY());
+    }
 }

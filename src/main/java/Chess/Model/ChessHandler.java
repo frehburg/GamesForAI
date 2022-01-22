@@ -186,6 +186,33 @@ public class ChessHandler implements iHandler {
             if(i == offset + 26 * step) {
                 game.move(iChessGame.H2,iChessGame.H1);
             }
+            if(i == offset + 27 * step) {
+                game.move(iChessGame.A4,iChessGame.A5);
+            }
+            if(i == offset + 28 * step) {
+                game.move(iChessGame.H8,iChessGame.H4);
+            }
+            if(i == offset + 29 * step) {
+                game.move(iChessGame.D2,iChessGame.D3);
+            }
+            if(i == offset + 30 * step) {
+                game.move(iChessGame.H4,iChessGame.F4);
+            }
+            if(i == offset + 31 * step) {
+                game.move(iChessGame.D3,iChessGame.D4);
+            }
+            if(i == offset + 32 * step) {
+                game.move(iChessGame.F4,iChessGame.F6);
+            }
+            if(i == offset + 33 * step) {
+                game.move(iChessGame.D4,iChessGame.D5);
+            }
+            if(i == offset + 34 * step) {
+                game.move(iChessGame.F6,iChessGame.H6);
+            }
+            if(i == offset + 35 * step) {
+                game.move(iChessGame.G1,iChessGame.H3);
+            }
             while(System.currentTimeMillis() - cur < delta) {
                 //System.out.println(System.currentTimeMillis() - cur);
             }

@@ -158,7 +158,6 @@ public class ChessGame implements iChessGame {
         if(piece == EMPTY)
             return false;
         int color = getColor(piece);
-        //save prev board
         if(color == turn) {//it is the right turn
             switch(piece) {
                 case W_PAWN_A:
@@ -222,11 +221,14 @@ public class ChessGame implements iChessGame {
                     //then actually move
                     prev2Board = ArrayUtils.copyArray(prevBoard);
                     prevBoard = ArrayUtils.copyArray(board);
-                    log("Moved " + convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
-                            + convertCoordsToString(fromCoords) + " to " + convertCoordsToString(toCoords) + "("+
+                    String piece = convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]);
+                    String fieldTo = convertCoordsToString(toCoords);
+                    log("Moved " + piece + " from "
+                            + convertCoordsToString(fromCoords) + " to " + fieldTo + "("+
                             convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
                     if(canPromote(toCoords)) {
                         board[toCoords.getX()][toCoords.getY()] = turn/Math.abs(turn) * iChessGame.W_QUEEN;
+                        log("Promoted "+ piece + " on " + fieldTo);
                     } else {
                         board[toCoords.getX()][toCoords.getY()] = board[fromCoords.getX()][fromCoords.getY()];
                     }
@@ -250,7 +252,6 @@ public class ChessGame implements iChessGame {
     @Override
     public ArrayList<Tuple<Integer, Integer>> getPawnMoves(Tuple<Integer,Integer> pawn) throws NoPieceInFieldException {
         //expects that the right player is at turn and that there is a pawn in the field
-        //TODO: add capture enPassant
         ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>();
         int x = pawn.getX(), y = pawn.getY();;
         int piece = board[pawn.getX()][pawn.getY()];
@@ -434,23 +435,100 @@ public class ChessGame implements iChessGame {
         int x = rook.getX(), y = rook.getY();;
         int piece = board[rook.getX()][rook.getY()];
         int color = getColor(piece);
-        //TODO: implement
         //rook can move down the file or down the rank
         //up
+        Tuple<Integer, Integer> t = rook.clone();
+        while (t.getY() > 0) {
+            t = new Tuple<>(t.getX(), t.getY() - 1);
+            if(!isEmpty(t)) {
+                //found a piece of the same color, therefore cannot move here or further
+                break;
+            }
+            moves.add(t);
+        }
         //down
+        t = rook.clone();
+        while (t.getY() < 7) {
+            t = new Tuple<>(t.getX(), t.getY() + 1);
+            if(!isEmpty(t)) {
+                //found a piece of the same color, therefore cannot move here or further
+                break;
+            }
+
+            moves.add(t);
+        }
         //left
+        t = rook.clone();
+        while (t.getX() > 0) {
+            t = new Tuple<>(t.getX() - 1, t.getY());
+            if(!isEmpty(t)) {
+                //found a piece of the same color, therefore cannot move here or further
+                break;
+            }
+            moves.add(t);
+        }
         //right
-        return null;
+        t = rook.clone();
+        while (t.getX() < 7) {
+            t = new Tuple<>(t.getX() + 1, t.getY());
+            if(!isEmpty(t)) {
+                //found a piece of the same color, therefore cannot move here or further
+                break;
+            }
+            moves.add(t);
+        }
+        return moves;
     }
     //------------------------KNIGHT-----------------------------------
     @Override
     public boolean moveKnight(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords) {
+        try {
+            ArrayList<Tuple<Integer,Integer>> moves = getKnightMoves(fromCoords);
+            for(Tuple<Integer, Integer> t : moves) {
+                //the requested move is a valid move
+                if(t.getX() == toCoords.getX() && t.getY() == toCoords.getY()) {
+                    //then actually move
+                    prev2Board = ArrayUtils.copyArray(prevBoard);
+                    prevBoard = ArrayUtils.copyArray(board);
+                    log("Moved " + convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
+                            + convertCoordsToString(fromCoords) + " to " + convertCoordsToString(toCoords) + "("+
+                            convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
+                    board[toCoords.getX()][toCoords.getY()] = board[fromCoords.getX()][fromCoords.getY()];
+                    board[fromCoords.getX()][fromCoords.getY()] = EMPTY;
+
+                    //change turn
+                    changeTurn();
+
+                    return true;
+                }
+                //else nothing happens
+            }
+        } catch (NoSuchPieceException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
     public ArrayList<Tuple<Integer, Integer>> getKnightMoves(Tuple<Integer,Integer> knight) {
-        return null;
+        ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>(), possibleMoves = new ArrayList<>();
+        int x = knight.getX(), y = knight.getY();;
+        int piece = board[knight.getX()][knight.getY()];
+        int color = getColor(piece);
+        possibleMoves.add(new Tuple<>(knight.getX() - 1, knight.getY() - 2));//top left
+        possibleMoves.add(new Tuple<>(knight.getX() + 1, knight.getY() - 2));//top right
+        possibleMoves.add(new Tuple<>(knight.getX() - 2, knight.getY() - 1));//left top
+        possibleMoves.add(new Tuple<>(knight.getX() - 2, knight.getY() + 1));//left bottom
+        possibleMoves.add(new Tuple<>(knight.getX() + 2, knight.getY() - 1));//right top
+        possibleMoves.add(new Tuple<>(knight.getX() + 2, knight.getY() + 1));//right bottom
+        possibleMoves.add(new Tuple<>(knight.getX() - 1, knight.getY() + 2));//bottom left
+        possibleMoves.add(new Tuple<>(knight.getX() + 1, knight.getY() + 2));//bottom right
+        for(Tuple<Integer,Integer> t : possibleMoves) {
+            if(inBounds(t)) {
+                moves.add(t);
+            }
+        }
+        return moves;
     }
     //------------------------BISHOP-----------------------------------
     @Override
@@ -490,6 +568,13 @@ public class ChessGame implements iChessGame {
 
     @Override
     public boolean isCheckmate(int player) {
+        return false;
+    }
+
+    @Override
+    public boolean inBounds(Tuple<Integer, Integer> field) {
+        if(field.getX() >= 0 && field.getX() <= 7 && field.getY() >= 0 && field.getY() <= 7)
+            return true;
         return false;
     }
     //------------------------REST-----------------------------------

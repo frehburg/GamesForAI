@@ -162,6 +162,8 @@ public interface iChessGame extends iGame2dPlus {
 
     boolean isCheckmate(int player);
 
+    boolean inBounds(Tuple<Integer,Integer> field);
+
     /**
      * Adds the move to the log
      */

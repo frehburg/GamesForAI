@@ -543,11 +543,38 @@ public class ChessGame implements iChessGame {
     //------------------------QUEEN-----------------------------------
     @Override
     public boolean moveQueen(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords) {
+        try {
+            ArrayList<Tuple<Integer,Integer>> moves = getQueenMoves(fromCoords);
+            for(Tuple<Integer, Integer> t : moves) {
+                //the requested move is a valid move
+                if(t.getX() == toCoords.getX() && t.getY() == toCoords.getY()) {
+                    //then actually move
+                    prev2Board = ArrayUtils.copyArray(prevBoard);
+                    prevBoard = ArrayUtils.copyArray(board);
+                    log("Moved " + convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
+                            + convertCoordsToString(fromCoords) + " to " + convertCoordsToString(toCoords) + "("+
+                            convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
+                    board[toCoords.getX()][toCoords.getY()] = board[fromCoords.getX()][fromCoords.getY()];
+                    board[fromCoords.getX()][fromCoords.getY()] = EMPTY;
+
+                    //change turn
+                    changeTurn();
+
+                    return true;
+                }
+                //else nothing happens
+            }
+        } catch (NoSuchPieceException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
     public ArrayList<Tuple<Integer, Integer>> getQueenMoves(Tuple<Integer,Integer> queen) {
+        ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>();
+        moves.addAll(getRookMoves(queen));
+        moves.addAll(getBishopMoves(queen));
         return null;
     }
     //------------------------KING-----------------------------------

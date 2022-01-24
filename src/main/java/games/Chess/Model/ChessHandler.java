@@ -98,124 +98,130 @@ public class ChessHandler implements iHandler {
     @Override
     public void game() {
         ChessGame game = new ChessGame();
+        p.setGame(game);
         //with colors
-        gui = new TileGUI2dDiscretePlus(null,null,this,game, TileSize.HUGE, spriteMapping, "Chess");
+        ChessMouseManager mouseManager = new ChessMouseManager(p);
+        gui = new TileGUI2dDiscretePlus(null,mouseManager,this,game, TileSize.HUGE, spriteMapping, "Chess");
         double cur = System.currentTimeMillis();
         double delta = 50;
         int i = 0;
-        int step = 1, offset = 10;
         while(!game.getState().isGameOver()) {
-            if(i == offset + 1 * step) {
-                game.move(iChessGame.B2,iChessGame.B4);
-            }
-            if(i == offset + 2 * step) {
-                game.move(iChessGame.B7,iChessGame.B6);
-            }
-            if(i == offset + 3 * step) {
-                game.move(iChessGame.E2,iChessGame.E3);
-            }
-            if(i == offset + 4 * step) {
-                game.move(iChessGame.H7,iChessGame.H5);
-            }
-            if(i == offset + 5 * step) {
-                game.move(iChessGame.A2,iChessGame.A4);
-            }
-            if(i == offset + 6 * step) {
-                game.move(iChessGame.C7,iChessGame.C5);
-            }
-            if(i == offset + 7 * step) {
-                game.move(iChessGame.B4,iChessGame.C5);
-            }
-            if(i == offset + 8 * step) {
-                game.move(iChessGame.B6,iChessGame.C5);
-            }
-            if(i == offset + 9 * step) {
-                game.move(iChessGame.E3,iChessGame.E4);
-            }
-            if(i == offset + 10 * step) {
-                game.move(iChessGame.C5,iChessGame.C4);
-            }
-            if(i == offset + 11 * step) {
-                game.move(iChessGame.F2,iChessGame.F3);
-            }
-            if(i == offset + 12 * step) {
-                game.move(iChessGame.C4,iChessGame.C3);
-            }
-            if(i == offset + 13 * step) {
-                game.move(iChessGame.E4,iChessGame.E5);
-            }
-            if(i == offset + 14 * step) {
-                game.move(iChessGame.D7,iChessGame.D5);
-            }
-            if(i == offset + 15 * step) {
-                game.move(iChessGame.E5,iChessGame.D5);
-            }
-            if(i == offset + 16 * step) {
-                game.move(iChessGame.H5,iChessGame.H4);
-            }
-            if(i == offset + 17 * step) {
-                game.move(iChessGame.G2,iChessGame.G4);
-            }
-            if(i == offset + 18 * step) {
-                game.move(iChessGame.H4,iChessGame.G4);
-            }
-            if(i == offset + 19 * step) {
-                game.move(iChessGame.H2,iChessGame.H4);
-            }
-            if(i == offset + 20 * step) {
-                game.move(iChessGame.G4,iChessGame.H4);
-            }
-            if(i == offset + 21 * step) {
-                game.move(iChessGame.D5,iChessGame.D6);
-            }
-            if(i == offset + 22 * step) {
-                game.move(iChessGame.H4,iChessGame.H3);
-            }
-            if(i == offset + 23 * step) {
-                game.move(iChessGame.D6,iChessGame.D7);
-            }
-            if(i == offset + 24 * step) {
-                game.move(iChessGame.H3,iChessGame.H2);
-            }
-            if(i == offset + 25 * step) {
-                game.move(iChessGame.D7,iChessGame.D8);
-            }
-            if(i == offset + 26 * step) {
-                game.move(iChessGame.H2,iChessGame.H1);
-            }
-            if(i == offset + 27 * step) {
-                game.move(iChessGame.A4,iChessGame.A5);
-            }
-            if(i == offset + 28 * step) {
-                game.move(iChessGame.H8,iChessGame.H4);
-            }
-            if(i == offset + 29 * step) {
-                game.move(iChessGame.D2,iChessGame.D3);
-            }
-            if(i == offset + 30 * step) {
-                game.move(iChessGame.H4,iChessGame.F4);
-            }
-            if(i == offset + 31 * step) {
-                game.move(iChessGame.D3,iChessGame.D4);
-            }
-            if(i == offset + 32 * step) {
-                game.move(iChessGame.F4,iChessGame.F6);
-            }
-            if(i == offset + 33 * step) {
-                game.move(iChessGame.D4,iChessGame.D5);
-            }
-            if(i == offset + 34 * step) {
-                game.move(iChessGame.F6,iChessGame.H6);
-            }
-            if(i == offset + 35 * step) {
-                game.move(iChessGame.G1,iChessGame.H3);
-            }
+            //test(i,game);
             while(System.currentTimeMillis() - cur < delta) {
                 //System.out.println(System.currentTimeMillis() - cur);
             }
             cur = System.currentTimeMillis();
             gui.render(game.getState());
             i++;
+        }
+    }
+
+    public void test(int i, ChessGame game) {
+        int step = 1, offset = 10;
+        if(i == offset + 1 * step) {
+            game.move(iChessGame.B2,iChessGame.B4);
+        }
+        if(i == offset + 2 * step) {
+            game.move(iChessGame.B7,iChessGame.B6);
+        }
+        if(i == offset + 3 * step) {
+            game.move(iChessGame.E2,iChessGame.E3);
+        }
+        if(i == offset + 4 * step) {
+            game.move(iChessGame.H7,iChessGame.H5);
+        }
+        if(i == offset + 5 * step) {
+            game.move(iChessGame.A2,iChessGame.A4);
+        }
+        if(i == offset + 6 * step) {
+            game.move(iChessGame.C7,iChessGame.C5);
+        }
+        if(i == offset + 7 * step) {
+            game.move(iChessGame.B4,iChessGame.C5);
+        }
+        if(i == offset + 8 * step) {
+            game.move(iChessGame.B6,iChessGame.C5);
+        }
+        if(i == offset + 9 * step) {
+            game.move(iChessGame.E3,iChessGame.E4);
+        }
+        if(i == offset + 10 * step) {
+            game.move(iChessGame.C5,iChessGame.C4);
+        }
+        if(i == offset + 11 * step) {
+            game.move(iChessGame.F2,iChessGame.F3);
+        }
+        if(i == offset + 12 * step) {
+            game.move(iChessGame.C4,iChessGame.C3);
+        }
+        if(i == offset + 13 * step) {
+            game.move(iChessGame.E4,iChessGame.E5);
+        }
+        if(i == offset + 14 * step) {
+            game.move(iChessGame.D7,iChessGame.D5);
+        }
+        if(i == offset + 15 * step) {
+            game.move(iChessGame.E5,iChessGame.D5);
+        }
+        if(i == offset + 16 * step) {
+            game.move(iChessGame.H5,iChessGame.H4);
+        }
+        if(i == offset + 17 * step) {
+            game.move(iChessGame.G2,iChessGame.G4);
+        }
+        if(i == offset + 18 * step) {
+            game.move(iChessGame.H4,iChessGame.G4);
+        }
+        if(i == offset + 19 * step) {
+            game.move(iChessGame.H2,iChessGame.H4);
+        }
+        if(i == offset + 20 * step) {
+            game.move(iChessGame.G4,iChessGame.H4);
+        }
+        if(i == offset + 21 * step) {
+            game.move(iChessGame.D5,iChessGame.D6);
+        }
+        if(i == offset + 22 * step) {
+            game.move(iChessGame.H4,iChessGame.H3);
+        }
+        if(i == offset + 23 * step) {
+            game.move(iChessGame.D6,iChessGame.D7);
+        }
+        if(i == offset + 24 * step) {
+            game.move(iChessGame.H3,iChessGame.H2);
+        }
+        if(i == offset + 25 * step) {
+            game.move(iChessGame.D7,iChessGame.D8);
+        }
+        if(i == offset + 26 * step) {
+            game.move(iChessGame.H2,iChessGame.H1);
+        }
+        if(i == offset + 27 * step) {
+            game.move(iChessGame.A4,iChessGame.A5);
+        }
+        if(i == offset + 28 * step) {
+            game.move(iChessGame.H8,iChessGame.H4);
+        }
+        if(i == offset + 29 * step) {
+            game.move(iChessGame.D2,iChessGame.D3);
+        }
+        if(i == offset + 30 * step) {
+            game.move(iChessGame.H4,iChessGame.F4);
+        }
+        if(i == offset + 31 * step) {
+            game.move(iChessGame.D3,iChessGame.D4);
+        }
+        if(i == offset + 32 * step) {
+            game.move(iChessGame.F4,iChessGame.F6);
+        }
+        if(i == offset + 33 * step) {
+            game.move(iChessGame.D4,iChessGame.D5);
+        }
+        if(i == offset + 34 * step) {
+            game.move(iChessGame.F6,iChessGame.H6);
+        }
+        if(i == offset + 35 * step) {
+            game.move(iChessGame.G1,iChessGame.H3);
         }
     }
 }

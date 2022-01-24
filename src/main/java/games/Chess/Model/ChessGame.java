@@ -3,7 +3,6 @@ package games.Chess.Model;
 import games.Chess.exceptions.NoPieceInFieldException;
 import games.Chess.exceptions.NoSuchPieceException;
 import games.Chess.interfaces.iChessGame;
-import misc.Interfaces.*;
 import misc.Interfaces.iState2dPlus;
 import misc.Utils.ArrayUtils;
 import misc.Utils.Tuple;
@@ -40,104 +39,104 @@ public class ChessGame implements iChessGame {
         Tuple<Integer, Integer> t;
         //---black back rank---------------------
         // black rook on white field
-        t = convertStringToCoords(A8);
+        t = iChessGame.convertStringToCoords(A8);
         board[t.getX()][t.getY()] = B_ROOK_WF;
         // black knight on black field
-        t = convertStringToCoords(B8);
+        t = iChessGame.convertStringToCoords(B8);
         board[t.getX()][t.getY()] = B_KNIGHT_BF;
         // black bishop on white field
-        t = convertStringToCoords(C8);
+        t = iChessGame.convertStringToCoords(C8);
         board[t.getX()][t.getY()] = B_BISHOP_WF;
         // white king
-        t = convertStringToCoords(D8);
-        board[t.getX()][t.getY()] = EMPTY;//B_KING;
+        t = iChessGame.convertStringToCoords(D8);
+        board[t.getX()][t.getY()] = B_KING;
         // white queen
-        t = convertStringToCoords(E8);
+        t = iChessGame.convertStringToCoords(E8);
         board[t.getX()][t.getY()] = B_QUEEN;
         // black bishop on black field
-        t = convertStringToCoords(F8);
+        t = iChessGame.convertStringToCoords(F8);
         board[t.getX()][t.getY()] = B_BISHOP_BF;
         // black knight on white field
-        t = convertStringToCoords(G8);
+        t = iChessGame.convertStringToCoords(G8);
         board[t.getX()][t.getY()] = B_KNIGHT_WF;
         // black rook on black field
-        t = convertStringToCoords(H8);
+        t = iChessGame.convertStringToCoords(H8);
         board[t.getX()][t.getY()] = B_ROOK_BF;
         //---black front rank---------------------
         // black pawn a
-        t = convertStringToCoords(A7);
+        t = iChessGame.convertStringToCoords(A7);
         board[t.getX()][t.getY()] = B_PAWN_A;
         // black pawn b
-        t = convertStringToCoords(B7);
+        t = iChessGame.convertStringToCoords(B7);
         board[t.getX()][t.getY()] = B_PAWN_B;
         // black pawn c
-        t = convertStringToCoords(C7);
+        t = iChessGame.convertStringToCoords(C7);
         board[t.getX()][t.getY()] = B_PAWN_C;
         // black pawn d
-        t = convertStringToCoords(D7);
+        t = iChessGame.convertStringToCoords(D7);
         board[t.getX()][t.getY()] = B_PAWN_D;
         // black pawn e
-        t = convertStringToCoords(E7);
+        t = iChessGame.convertStringToCoords(E7);
         board[t.getX()][t.getY()] = B_PAWN_E;
         // black pawn f
-        t = convertStringToCoords(F7);
+        t = iChessGame.convertStringToCoords(F7);
         board[t.getX()][t.getY()] = B_PAWN_F;
         // black pawn g
-        t = convertStringToCoords(G7);
+        t = iChessGame.convertStringToCoords(G7);
         board[t.getX()][t.getY()] = B_PAWN_G;
         // black pawn h
-        t = convertStringToCoords(H7);
+        t = iChessGame.convertStringToCoords(H7);
         board[t.getX()][t.getY()] = B_PAWN_H;
 
         //---white back rank---------------------
         // white rook on white field
-        t = convertStringToCoords(A1);
+        t = iChessGame.convertStringToCoords(A1);
         board[t.getX()][t.getY()] = W_ROOK_BF;
         // white knight on black field
-        t = convertStringToCoords(B1);
+        t = iChessGame.convertStringToCoords(B1);
         board[t.getX()][t.getY()] = W_KNIGHT_WF;
         // white bishop on white field
-        t = convertStringToCoords(C1);
+        t = iChessGame.convertStringToCoords(C1);
         board[t.getX()][t.getY()] = W_BISHOP_BF;
         // white king
-        t = convertStringToCoords(D1);
+        t = iChessGame.convertStringToCoords(D1);
         board[t.getX()][t.getY()] = W_KING;
         // white queen
-        t = convertStringToCoords(E1);
+        t = iChessGame.convertStringToCoords(E1);
         board[t.getX()][t.getY()] = W_QUEEN;
         // white bishop on black field
-        t = convertStringToCoords(F1);
+        t = iChessGame.convertStringToCoords(F1);
         board[t.getX()][t.getY()] = W_BISHOP_WF;
         // white knight on white field
-        t = convertStringToCoords(G1);
+        t = iChessGame.convertStringToCoords(G1);
         board[t.getX()][t.getY()] = W_KNIGHT_BF;
         // white rook on black field
-        t = convertStringToCoords(H1);
-        board[t.getX()][t.getY()] = EMPTY;//W_ROOK_WF;
+        t = iChessGame.convertStringToCoords(H1);
+        board[t.getX()][t.getY()] = W_ROOK_WF;
         //---white front rank---------------------
         // white pawn a
-        t = convertStringToCoords(A2);
+        t = iChessGame.convertStringToCoords(A2);
         board[t.getX()][t.getY()] = W_PAWN_A;
         // white pawn b
-        t = convertStringToCoords(B2);
+        t = iChessGame.convertStringToCoords(B2);
         board[t.getX()][t.getY()] = W_PAWN_B;
         // white pawn c
-        t = convertStringToCoords(C2);
+        t = iChessGame.convertStringToCoords(C2);
         board[t.getX()][t.getY()] = W_PAWN_C;
         // white pawn d
-        t = convertStringToCoords(D2);
+        t = iChessGame.convertStringToCoords(D2);
         board[t.getX()][t.getY()] = W_PAWN_D;
         // white pawn e
-        t = convertStringToCoords(E2);
+        t = iChessGame.convertStringToCoords(E2);
         board[t.getX()][t.getY()] = W_PAWN_E;
         // white pawn f
-        t = convertStringToCoords(F2);
+        t = iChessGame.convertStringToCoords(F2);
         board[t.getX()][t.getY()] = W_PAWN_F;
         // white pawn g
-        t = convertStringToCoords(G2);
+        t = iChessGame.convertStringToCoords(G2);
         board[t.getX()][t.getY()] = W_PAWN_G;
         // white pawn h
-        t = convertStringToCoords(H2);
+        t = iChessGame.convertStringToCoords(H2);
         board[t.getX()][t.getY()] = W_PAWN_H;
 
         // REST EMOTY
@@ -153,12 +152,13 @@ public class ChessGame implements iChessGame {
 
     @Override
     public boolean move(String from, String to){
-        Tuple<Integer,Integer> fromCoords = convertStringToCoords(from),
-                toCoords = convertStringToCoords(to);
+        System.out.println(turn);
+        Tuple<Integer,Integer> fromCoords = iChessGame.convertStringToCoords(from),
+                toCoords = iChessGame.convertStringToCoords(to);
         int piece = board[fromCoords.getX()][fromCoords.getY()];
         if(piece == EMPTY)
             return false;
-        int color = getColor(piece);
+        int color = iChessGame.getColor(piece);
         if(color == turn) {//it is the right turn
             switch(piece) {
                 case W_PAWN_A:
@@ -220,11 +220,11 @@ public class ChessGame implements iChessGame {
                     //then actually move
                     prev2Board = ArrayUtils.copyArray(prevBoard);
                     prevBoard = ArrayUtils.copyArray(board);
-                    String piece = convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]);
-                    String fieldTo = convertCoordsToString(toCoords);
+                    String piece = iChessGame.convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]);
+                    String fieldTo = iChessGame.convertCoordsToString(toCoords);
                     log("Moved " + piece + " from "
-                            + convertCoordsToString(fromCoords) + " to " + fieldTo + "("+
-                            convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
+                            + iChessGame.convertCoordsToString(fromCoords) + " to " + fieldTo + "("+
+                            iChessGame.convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
                     if(canPromote(toCoords)) {
                         board[toCoords.getX()][toCoords.getY()] = turn/Math.abs(turn) * iChessGame.W_QUEEN;
                         log("Promoted "+ piece + " on " + fieldTo);
@@ -252,7 +252,7 @@ public class ChessGame implements iChessGame {
         ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>();
         int x = pawn.getX(), y = pawn.getY();
         int piece = board[pawn.getX()][pawn.getY()];
-        int color = getColor(piece);
+        int color = iChessGame.getColor(piece);
         if(color == WHITE) {
             if(y == 6) {//still in start position
                 Tuple<Integer, Integer> nextField = new Tuple<>(x,5), nextNextField = new Tuple<>(x, 4);
@@ -343,10 +343,10 @@ public class ChessGame implements iChessGame {
     public boolean canCaptureEnPassant(Tuple<Integer, Integer> capturer, Tuple<Integer, Integer> capturee) {
         int capturerPiece = board[capturer.getX()][capturer.getY()],
         captureePiece = board[capturee.getX()][capturee.getY()];
-        int color = getColor(capturerPiece);
+        int color = iChessGame.getColor(capturerPiece);
         int x = capturer.getX(), y = capturer.getY();
         try {
-            if(convertPieceIDString(captureePiece).contains("pawn")) {
+            if(iChessGame.convertPieceIDString(captureePiece).contains("pawn")) {
                 if(color == WHITE) {
                     //capturing
                     if(x > 0 && y == 3) {
@@ -407,9 +407,9 @@ public class ChessGame implements iChessGame {
                     //then actually move
                     prev2Board = ArrayUtils.copyArray(prevBoard);
                     prevBoard = ArrayUtils.copyArray(board);
-                    log("Moved " + convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
-                            + convertCoordsToString(fromCoords) + " to " + convertCoordsToString(toCoords) + "("+
-                            convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
+                    log("Moved " + iChessGame.convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
+                            + iChessGame.convertCoordsToString(fromCoords) + " to " + iChessGame.convertCoordsToString(toCoords) + "("+
+                            iChessGame.convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
                     board[toCoords.getX()][toCoords.getY()] = board[fromCoords.getX()][fromCoords.getY()];
                     board[fromCoords.getX()][fromCoords.getY()] = EMPTY;
 
@@ -436,6 +436,9 @@ public class ChessGame implements iChessGame {
             t = new Tuple<>(t.getX(), t.getY() - 1);
             if(!isEmpty(t)) {
                 //found a piece of the same color, therefore cannot move here or further
+                if(iChessGame.getColor(board[t.getX()][t.getY()]) != turn) {//if we found a piece of the opposing player
+                    moves.add(t);
+                }
                 break;
             }
             moves.add(t);
@@ -446,6 +449,9 @@ public class ChessGame implements iChessGame {
             t = new Tuple<>(t.getX(), t.getY() + 1);
             if(!isEmpty(t)) {
                 //found a piece of the same color, therefore cannot move here or further
+                if(iChessGame.getColor(board[t.getX()][t.getY()]) != turn) {//if we found a piece of the opposing player
+                    moves.add(t);
+                }
                 break;
             }
 
@@ -457,6 +463,9 @@ public class ChessGame implements iChessGame {
             t = new Tuple<>(t.getX() - 1, t.getY());
             if(!isEmpty(t)) {
                 //found a piece of the same color, therefore cannot move here or further
+                if(iChessGame.getColor(board[t.getX()][t.getY()]) != turn) {//if we found a piece of the opposing player
+                    moves.add(t);
+                }
                 break;
             }
             moves.add(t);
@@ -467,6 +476,9 @@ public class ChessGame implements iChessGame {
             t = new Tuple<>(t.getX() + 1, t.getY());
             if(!isEmpty(t)) {
                 //found a piece of the same color, therefore cannot move here or further
+                if(iChessGame.getColor(board[t.getX()][t.getY()]) != turn) {//if we found a piece of the opposing player
+                    moves.add(t);
+                }
                 break;
             }
             moves.add(t);
@@ -484,9 +496,9 @@ public class ChessGame implements iChessGame {
                     //then actually move
                     prev2Board = ArrayUtils.copyArray(prevBoard);
                     prevBoard = ArrayUtils.copyArray(board);
-                    log("Moved " + convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
-                            + convertCoordsToString(fromCoords) + " to " + convertCoordsToString(toCoords) + "("+
-                            convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
+                    log("Moved " + iChessGame.convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
+                            + iChessGame.convertCoordsToString(fromCoords) + " to " + iChessGame.convertCoordsToString(toCoords) + "("+
+                            iChessGame.convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
                     board[toCoords.getX()][toCoords.getY()] = board[fromCoords.getX()][fromCoords.getY()];
                     board[fromCoords.getX()][fromCoords.getY()] = EMPTY;
 
@@ -542,9 +554,9 @@ public class ChessGame implements iChessGame {
                     //then actually move
                     prev2Board = ArrayUtils.copyArray(prevBoard);
                     prevBoard = ArrayUtils.copyArray(board);
-                    log("Moved " + convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
-                            + convertCoordsToString(fromCoords) + " to " + convertCoordsToString(toCoords) + "("+
-                            convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
+                    log("Moved " + iChessGame.convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
+                            + iChessGame.convertCoordsToString(fromCoords) + " to " + iChessGame.convertCoordsToString(toCoords) + "("+
+                            iChessGame.convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
                     board[toCoords.getX()][toCoords.getY()] = board[fromCoords.getX()][fromCoords.getY()];
                     board[fromCoords.getX()][fromCoords.getY()] = EMPTY;
 
@@ -565,7 +577,7 @@ public class ChessGame implements iChessGame {
     public ArrayList<Tuple<Integer, Integer>> getQueenMoves(Tuple<Integer,Integer> queen) {
         ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>();
         moves.addAll(getRookMoves(queen));
-        moves.addAll(getBishopMoves(queen));
+        //moves.addAll(getBishopMoves(queen));//TODO
         return moves;
     }
     //------------------------KING-----------------------------------
@@ -594,113 +606,6 @@ public class ChessGame implements iChessGame {
         return field.getX() >= 0 && field.getX() <= 7 && field.getY() >= 0 && field.getY() <= 7;
     }
     //------------------------REST-----------------------------------
-
-    @Override
-    public Tuple<Integer, Integer> convertStringToCoords(String field) {
-        char file = field.charAt(0);
-        int rank = Integer.parseInt(field.charAt(1)+"");
-        int x = -1, y = 8 - rank;
-        switch (file) {
-            case 'a' -> x = 0;
-            case 'b' -> x = 1;
-            case 'c' -> x = 2;
-            case 'd' -> x = 3;
-            case 'e' -> x = 4;
-            case 'f' -> x = 5;
-            case 'g' -> x = 6;
-            case 'h' -> x = 7;
-        }
-        return new Tuple<>(x,y);
-    }
-
-    public String convertCoordsToString(Tuple<Integer, Integer> field) {
-        String f = "";
-        switch (field.getX()) {
-            case 0 -> f += 'a';
-            case 1 -> f += 'b';
-            case 2 -> f += 'c';
-            case 3 -> f += 'd';
-            case 4 -> f += 'e';
-            case 5 -> f += 'f';
-            case 6 -> f += 'g';
-            case 7 -> f += 'h';
-        }
-        int rank = -field.getY() + 8;
-        f += rank;
-        return f;
-    }
-
-    public String convertPieceIDString(int piece) throws NoSuchPieceException {
-        switch(piece) {
-            case W_PAWN_A:
-            case W_PAWN_B:
-            case W_PAWN_C:
-            case W_PAWN_D:
-            case W_PAWN_E:
-            case W_PAWN_F:
-            case W_PAWN_G:
-            case W_PAWN_H:
-                return "white pawn";
-            case B_PAWN_A:
-            case B_PAWN_B:
-            case B_PAWN_C:
-            case B_PAWN_D:
-            case B_PAWN_E:
-            case B_PAWN_F:
-            case B_PAWN_G:
-            case B_PAWN_H:
-                return "black pawn";
-            case W_ROOK_BF:
-            case W_ROOK_WF:
-                return "white rook";
-            case B_ROOK_BF:
-            case B_ROOK_WF:
-                return "black rook";
-            case W_KNIGHT_BF:
-            case W_KNIGHT_WF:
-                return "white knight";
-            case B_KNIGHT_BF:
-            case B_KNIGHT_WF:
-                return "black knight";
-            case W_BISHOP_BF:
-            case W_BISHOP_WF:
-                return "white bishop";
-            case B_BISHOP_BF:
-            case B_BISHOP_WF:
-                return "black bishop";
-            case W_KING:
-                return "white king";
-            case B_KING:
-                return "black king";
-            case W_QUEEN:
-                return "white queen";
-            case B_QUEEN:
-                return "black queen";
-            case EMPTY:
-                return "empty";
-        }
-        throw new NoSuchPieceException(piece);
-    }
-    public int convertPieceIDValue(int piece) throws NoSuchPieceException {
-        return switch (piece) {
-            case W_PAWN_A, W_PAWN_B, W_PAWN_C, W_PAWN_D, W_PAWN_E, W_PAWN_F, W_PAWN_G, W_PAWN_H -> PAWN_VALUE;
-            case B_PAWN_A, B_PAWN_B, B_PAWN_C, B_PAWN_D, B_PAWN_E, B_PAWN_F, B_PAWN_G, B_PAWN_H -> -PAWN_VALUE;
-            case W_ROOK_BF, W_ROOK_WF -> ROOK_VALUE;
-            case B_ROOK_BF, B_ROOK_WF -> -ROOK_VALUE;
-            case W_KNIGHT_BF, W_KNIGHT_WF -> KNIGHT_VALUE;
-            case B_KNIGHT_BF, B_KNIGHT_WF -> -KNIGHT_VALUE;
-            case W_BISHOP_BF, W_BISHOP_WF -> BISHOP_VALUE;
-            case B_BISHOP_BF, B_BISHOP_WF -> -BISHOP_VALUE;
-            case W_QUEEN -> QUEEN_VALUE;
-            case B_QUEEN -> -QUEEN_VALUE;
-            default -> 0;
-        };
-    }
-
-    public int getColor(int piece) {
-        int abs = Math.abs(piece);
-        return piece/abs == 1 ? WHITE : BLACK;
-    }
 
     public boolean isEmpty(Tuple<Integer, Integer> field) {
         return board[field.getX()][field.getY()] == EMPTY;
@@ -731,7 +636,7 @@ public class ChessGame implements iChessGame {
         for (int[] ints : board) {
             for (int y = 0; y < board.length; y++) {
                 try {
-                    score += convertPieceIDValue(ints[y]);
+                    score += iChessGame.convertPieceIDValue(ints[y]);
                 } catch (NoSuchPieceException e) {
                     e.printStackTrace();
                 }

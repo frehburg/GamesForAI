@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import java.util.Set;
 public class TileGUI2dDiscrete implements iTileGUI {
     private iHandler h;
     private KeyListener km;
-    private MouseListener mm;
+    private MouseListener ml;
     private JFrame frame;
     private JPanel p;
     private TileBoardComponent2dDiscrete bc;
@@ -31,20 +32,20 @@ public class TileGUI2dDiscrete implements iTileGUI {
     private String title;
     private boolean useImages;
 
-    public TileGUI2dDiscrete(KeyListener km, MouseListener mm, iHandler h, iGame game, TileSize tileSize, String title, HashMap<Integer, Color> colorMapping) {
+    public TileGUI2dDiscrete(KeyListener km, MouseListener ml, iHandler h, iGame game, TileSize tileSize, String title, HashMap<Integer, Color> colorMapping) {
         this.title = title;
         this.size = tileSize.getSize();
         this.useImages = false;
         setResources(colorMapping);
-        startGame(km, mm, h, game);
+        startGame(km, ml, (MouseMotionListener) ml, h, game);
     }
 
-    public TileGUI2dDiscrete(KeyListener km, MouseListener mm, iHandler h, iGame game, TileSize tileSize, HashMap<Integer, String> locationMapping, String title) {
+    public TileGUI2dDiscrete(KeyListener km, MouseListener ml, iHandler h, iGame game, TileSize tileSize, HashMap<Integer, String> locationMapping, String title) {
         this.title = title;
         this.size = tileSize.getSize();
         this.useImages = true;
         setResources(locationMapping, 0);
-        startGame(km, mm, h, game);
+        startGame(km, ml, (MouseMotionListener) ml, h, game);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class TileGUI2dDiscrete implements iTileGUI {
     }
 
     @Override
-    public void startGame(KeyListener km, MouseListener mm, iHandler h, iGame g) {
+    public void startGame(KeyListener km, MouseListener ml, MouseMotionListener mm, iHandler h, iGame g) {
         //TODO: with sprites
         this.km = km;
         this.h = h;
@@ -97,8 +98,10 @@ public class TileGUI2dDiscrete implements iTileGUI {
         //input
         if(km != null)
             frame.addKeyListener(km);
-        if(mm != null)
-            frame.addMouseListener(mm);
+        if(mm != null) {
+            frame.addMouseListener(ml);
+            frame.addMouseMotionListener(mm);
+        }
         frame.setVisible(true);
     }
 

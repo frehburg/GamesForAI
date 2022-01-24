@@ -1,4 +1,6 @@
-package games.Chess.Model;
+package games.Chess;
+
+import games.Chess.Model.ChessHandler;
 
 public class Main {
     //assets: https://github.com/Ka-hu/chess-pieces/tree/master/boards

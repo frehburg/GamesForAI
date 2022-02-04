@@ -84,8 +84,8 @@ public class ChessHandler implements iHandler {
 
     @Override
     public void newGame() {
-        if(gui != null)
-            gui.exit();
+        /*if(gui != null)
+            gui.exit();*/
         game();//plays one game
         newGame();//starts new game
     }
@@ -99,7 +99,6 @@ public class ChessHandler implements iHandler {
     public void game() {
         ChessGame game = new ChessGame();
         p.setGame(game);
-        //with colors
         ChessMouseManager mouseManager = new ChessMouseManager(p);
         gui = new TileGUI2dDiscretePlus(null,mouseManager,this,game, TileSize.HUGE, spriteMapping, "Chess");
         double cur = System.currentTimeMillis();

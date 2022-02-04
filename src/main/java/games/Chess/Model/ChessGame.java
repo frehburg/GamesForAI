@@ -29,6 +29,9 @@ public class ChessGame implements iChessGame {
 
     @Override
     public iState2dPlus getState() {
+        if(Math.abs(getScore()) > 900) {
+            gameOver = true;
+        }
         return new ChessState(this.gameOver, getScore(), this.board, this.won, this.atRisk);
     }
 
@@ -152,6 +155,9 @@ public class ChessGame implements iChessGame {
 
     @Override
     public boolean move(String from, String to){
+        if(gameOver) {
+            return false;
+        }
         System.out.println(turn);
         Tuple<Integer,Integer> fromCoords = iChessGame.convertStringToCoords(from),
                 toCoords = iChessGame.convertStringToCoords(to);

@@ -1,6 +1,7 @@
 package misc.TileGUI.Discrete2DPlus;
 
 import games.Chess.Model.ChessState;
+import games.Chess.Model.LightweightChessState;
 import games.Game2048.Model.State2048;
 import misc.Interfaces.iState2dPlus;
 
@@ -49,8 +50,10 @@ public class TileBoardComponent2dDiscretePlus extends JComponent {
         }
 
         if(gameOver) {
-            g2.setColor(Color.black);
-            g2.fill(new Rectangle2D.Double(0,0,board[0].length * size, board[0].length * size));
+            if(!(state instanceof ChessState || state instanceof LightweightChessState)) {
+                g2.setColor(Color.black);
+                g2.fill(new Rectangle2D.Double(0,0,board[0].length * size, board[0].length * size));
+            }
             g2.setColor(Color.RED);
             g2.drawString("GAME OVER", (int) (board[0].length * size * 0.38), (int) (board[0].length * size * 0.5));
         }

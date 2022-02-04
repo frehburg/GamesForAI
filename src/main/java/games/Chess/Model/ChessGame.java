@@ -142,7 +142,7 @@ public class ChessGame implements iChessGame {
         t = iChessGame.convertStringToCoords(H2);
         board[t.getX()][t.getY()] = W_PAWN_H;
 
-        // REST EMOTY
+        // REST EMPTY
         for(int x = 0; x < board.length; x++) {
             for(int y = 2; y < 6; y++) {
                 board[x][y] = EMPTY;
@@ -668,6 +668,32 @@ public class ChessGame implements iChessGame {
     //------------------------KING-----------------------------------
     @Override
     public boolean moveKing(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords) {
+        //TODO: only move is king is not check. Update check after every move. Group all move methods into one
+        //TODO: with the id of the piece as input to decide wi´hich moves list is required
+        try {
+            ArrayList<Tuple<Integer,Integer>> moves = getKingMoves(fromCoords);
+            for(Tuple<Integer, Integer> t : moves) {
+                //the requested move is a valid move
+                if(t.getX() == toCoords.getX() && t.getY() == toCoords.getY()) {
+                    //then actually move
+                    prev2Board = ArrayUtils.copyArray(prevBoard);
+                    prevBoard = ArrayUtils.copyArray(board);
+                    log("Moved " + iChessGame.convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
+                            + iChessGame.convertCoordsToString(fromCoords) + " to " + iChessGame.convertCoordsToString(toCoords) + "("+
+                            iChessGame.convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
+                    board[toCoords.getX()][toCoords.getY()] = board[fromCoords.getX()][fromCoords.getY()];
+                    board[fromCoords.getX()][fromCoords.getY()] = EMPTY;
+
+                    //change turn
+                    changeTurn();
+
+                    return true;
+                }
+                //else nothing happens
+            }
+        } catch (NoSuchPieceException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
@@ -678,7 +704,24 @@ public class ChessGame implements iChessGame {
 
     @Override
     public ArrayList<Tuple<Integer, Integer>> getKingMoves(Tuple<Integer,Integer> king) {
-        return null;
+        //TODO: restrict into only non-check moves
+        //TODO: can do with contains of possible moves of enemy figures and contains
+        ArrayList<Tuple<Integer, Integer>> moves = new ArrayList<>();
+        int[][] delta = new int[][]{
+                {-1,-1}, {0,-1}, {1,-1},
+                {-1, 0},         {1, 0},
+                {-1, 1}, {0, 1}, {1, 1}
+        };
+        for(int[] next : delta) {
+            Tuple<Integer, Integer> t = new Tuple<>(king.getX() + next[0], king.getY() + next[1]);
+            if(inBounds(t)) {
+                System.out.println("Hello");
+                System.out.println(t);
+                //can move there
+                moves.add(t);
+            }
+        }
+        return moves;
     }
 
     @Override

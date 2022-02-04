@@ -2,13 +2,19 @@ package games.Game2048.Model;
 
 import games.Game2048.Interfaces.iGame2048;
 import games.Game2048.enums.Direction2048;
+import misc.Interfaces.iPlayer;
 
-public class Player2048{
+public class Player2048 implements iPlayer {
 
+    private final String playerName;
     private iGame2048 r;
 
     public Player2048() {
+        this.playerName = "Chris";
+    }
 
+    public Player2048(String playerName) {
+        this.playerName = playerName;
     }
 
     public void setGame(iGame2048 r) {
@@ -35,4 +41,8 @@ public class Player2048{
         return r.getState();
     }
 
+    @Override
+    public String getName() {
+        return playerName;
+    }
 }

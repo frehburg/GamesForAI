@@ -5,7 +5,7 @@ public interface iHandler {
 
     void newGame();
 
-    void addToHighScores(iState state);
+    void addToHighScores(iState state, String playerName);
 
     void game();
 }

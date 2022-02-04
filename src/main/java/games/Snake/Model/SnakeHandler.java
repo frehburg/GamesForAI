@@ -32,7 +32,7 @@ public class SnakeHandler implements iHandler {
     @Override
     public void init() {
         highscores = new ArrayList<>();
-        p = new SnakePlayer();
+        p = new SnakePlayer("Iatros v1");
         km = new SnakeKeyManager();
         km.setPlayer(p);
         snakeBoardSize = SnakeBoardSize.STANDARD;
@@ -66,8 +66,8 @@ public class SnakeHandler implements iHandler {
     }
 
     @Override
-    public void addToHighScores(iState state) {
-        highscores.add(new Tuple<>("Bob",state.getScore()));
+    public void addToHighScores(iState state, String playerName) {
+        highscores.add(new Tuple<>(playerName,state.getScore()));
         highscores.sort((o1, o2) -> -Integer.compare(o1.getY(),o2.getY()));
         System.out.println("--------------------------------");
         System.out.println("           Highscores");
@@ -97,7 +97,7 @@ public class SnakeHandler implements iHandler {
             game.updateBoard();
             gui.render(game.getState());
         }
-        addToHighScores(game.getState());
+        addToHighScores(game.getState(), p.getName());
     }
 
 }

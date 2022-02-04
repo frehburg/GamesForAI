@@ -17,8 +17,8 @@ public class SnakeAgentHandler {
     private final SnakeSpeed snakeSpeed;
 
     public SnakeAgentHandler() {
-        this.player = new SnakePlayer();
-        this.agent = new SnakeSimpleReflexAgent(player);
+        this.player = new SnakePlayer("Iatros v1");
+        this.agent = new SnakeBaseLineAgent(player);
         this.snakeBoardSize = SnakeBoardSize.STANDARD;
         this.snakeSpeed = SnakeSpeed.EASY;
         Triple<Double, Double, Double> scores = play(10000);

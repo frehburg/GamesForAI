@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 /**
  * This class is optimized for drawing
+ *
+ * //TODO: use short instead of int
  */
 public class ChessState implements iState2dPlus {
     private final boolean gameOver;

@@ -2,13 +2,19 @@ package games.Snake.Model;
 
 import games.Snake.Interfaces.iSnakeGame;
 import games.Snake.enums.SnakeDirection;
+import misc.Interfaces.iPlayer;
 
-public class SnakePlayer{
+public class SnakePlayer implements iPlayer {
 
+    private final String playerName;
     private iSnakeGame r;
 
     public SnakePlayer() {
+        this.playerName = "Bob";
+    }
 
+    public SnakePlayer(String playerName) {
+        this.playerName = playerName;
     }
 
     public void setGame(iSnakeGame r) {
@@ -35,4 +41,7 @@ public class SnakePlayer{
         return r.getState();
     }
 
+    public String getName() {
+        return playerName;
+    }
 }

@@ -48,10 +48,10 @@ public class ChessGame implements iChessGame {
         t = iChessGame.convertStringToCoords(C8);
         board[t.getX()][t.getY()] = B_BISHOP_WF;
         // white king
-        t = iChessGame.convertStringToCoords(D8);
+        t = iChessGame.convertStringToCoords(E8);
         board[t.getX()][t.getY()] = B_KING;
         // white queen
-        t = iChessGame.convertStringToCoords(E8);
+        t = iChessGame.convertStringToCoords(D8);
         board[t.getX()][t.getY()] = B_QUEEN;
         // black bishop on black field
         t = iChessGame.convertStringToCoords(F8);
@@ -99,10 +99,10 @@ public class ChessGame implements iChessGame {
         t = iChessGame.convertStringToCoords(C1);
         board[t.getX()][t.getY()] = W_BISHOP_BF;
         // white king
-        t = iChessGame.convertStringToCoords(D1);
+        t = iChessGame.convertStringToCoords(E1);
         board[t.getX()][t.getY()] = W_KING;
         // white queen
-        t = iChessGame.convertStringToCoords(E1);
+        t = iChessGame.convertStringToCoords(D1);
         board[t.getX()][t.getY()] = W_QUEEN;
         // white bishop on black field
         t = iChessGame.convertStringToCoords(F1);
@@ -536,12 +536,90 @@ public class ChessGame implements iChessGame {
     //------------------------BISHOP-----------------------------------
     @Override
     public boolean moveBishop(Tuple<Integer,Integer> fromCoords, Tuple<Integer,Integer> toCoords) {
+        try {
+            ArrayList<Tuple<Integer,Integer>> moves = getBishopMoves(fromCoords);
+            for(Tuple<Integer, Integer> t : moves) {
+                //the requested move is a valid move
+                if(t.getX() == toCoords.getX() && t.getY() == toCoords.getY()) {
+                    //then actually move
+                    prev2Board = ArrayUtils.copyArray(prevBoard);
+                    prevBoard = ArrayUtils.copyArray(board);
+                    log("Moved " + iChessGame.convertPieceIDString(board[fromCoords.getX()][fromCoords.getY()]) + " from "
+                            + iChessGame.convertCoordsToString(fromCoords) + " to " + iChessGame.convertCoordsToString(toCoords) + "("+
+                            iChessGame.convertPieceIDString(board[toCoords.getX()][toCoords.getY()])+")");
+                    board[toCoords.getX()][toCoords.getY()] = board[fromCoords.getX()][fromCoords.getY()];
+                    board[fromCoords.getX()][fromCoords.getY()] = EMPTY;
+
+                    //change turn
+                    changeTurn();
+
+                    return true;
+                }
+                //else nothing happens
+            }
+        } catch (NoSuchPieceException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
     public ArrayList<Tuple<Integer, Integer>> getBishopMoves(Tuple<Integer,Integer> bishop) {
-        return null;
+        ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>();
+        //top right
+        Tuple<Integer, Integer> t = bishop.clone();
+        while (t.getY() > 0 && t.getX() < 7) {
+            t = new Tuple<>(t.getX() + 1, t.getY() - 1);
+            if(!isEmpty(t)) {
+                //found a piece of the same color, therefore cannot move here or further
+                if(iChessGame.getColor(board[t.getX()][t.getY()]) != turn) {//if we found a piece of the opposing player
+                    moves.add(t);
+                }
+                break;
+            }
+            moves.add(t);
+        }
+        //top left
+        t = bishop.clone();
+        while (t.getY() > 0 && t.getX() > 0) {
+            t = new Tuple<>(t.getX() - 1, t.getY() - 1);
+            if(!isEmpty(t)) {
+                //found a piece of the same color, therefore cannot move here or further
+                if(iChessGame.getColor(board[t.getX()][t.getY()]) != turn) {//if we found a piece of the opposing player
+                    moves.add(t);
+                }
+                break;
+            }
+
+            moves.add(t);
+        }
+        //bottom right
+        t = bishop.clone();
+        while (t.getY() < 7 && t.getX() < 7) {
+            t = new Tuple<>(t.getX() + 1, t.getY() + 1);
+            if(!isEmpty(t)) {
+                //found a piece of the same color, therefore cannot move here or further
+                if(iChessGame.getColor(board[t.getX()][t.getY()]) != turn) {//if we found a piece of the opposing player
+                    moves.add(t);
+                }
+                break;
+            }
+            moves.add(t);
+        }
+        //bottom left
+        t = bishop.clone();
+        while (t.getY() < 7 && t.getX() > 0) {
+            t = new Tuple<>(t.getX() - 1, t.getY() + 1);
+            if(!isEmpty(t)) {
+                //found a piece of the same color, therefore cannot move here or further
+                if(iChessGame.getColor(board[t.getX()][t.getY()]) != turn) {//if we found a piece of the opposing player
+                    moves.add(t);
+                }
+                break;
+            }
+            moves.add(t);
+        }
+        return moves;
     }
     //------------------------QUEEN-----------------------------------
     @Override
@@ -577,7 +655,8 @@ public class ChessGame implements iChessGame {
     public ArrayList<Tuple<Integer, Integer>> getQueenMoves(Tuple<Integer,Integer> queen) {
         ArrayList<Tuple<Integer,Integer>> moves = new ArrayList<>();
         moves.addAll(getRookMoves(queen));
-        //moves.addAll(getBishopMoves(queen));//TODO
+        moves.addAll(getBishopMoves(queen));
+        moves.addAll(getBishopMoves(queen));
         return moves;
     }
     //------------------------KING-----------------------------------

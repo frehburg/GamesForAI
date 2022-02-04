@@ -31,7 +31,7 @@ public interface iChessGame extends iGame2dPlus {
             B_PAWN_C = -11, B_PAWN_D = -12, B_PAWN_E = -13, B_PAWN_F = -14, B_PAWN_G = -15,
             B_PAWN_H = -16;
     //VALUE OF PIECES
-    int PAWN_VALUE = 1, KNIGHT_VALUE = 3, BISHOP_VALUE = 3, ROOK_VALUE = 5, QUEEN_VALUE = 9;
+    int PAWN_VALUE = 1, KNIGHT_VALUE = 3, BISHOP_VALUE = 3, ROOK_VALUE = 5, QUEEN_VALUE = 9, KING_VALUE = 1000;
     //RISK
     int WHITE_RISK = 101, BLACK_RISK = -101;
     //RIM
@@ -141,6 +141,8 @@ public interface iChessGame extends iGame2dPlus {
             case B_BISHOP_BF, B_BISHOP_WF -> -BISHOP_VALUE;
             case W_QUEEN -> QUEEN_VALUE;
             case B_QUEEN -> -QUEEN_VALUE;
+            case W_KING -> KING_VALUE;
+            case B_KING -> -KING_VALUE;
             default -> 0;
         };
     }

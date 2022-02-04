@@ -91,7 +91,7 @@ public class ChessHandler implements iHandler {
     }
 
     @Override
-    public void addToHighScores(iState state) {
+    public void addToHighScores(iState state, String playerName) {
         //leave empty
     }
 
